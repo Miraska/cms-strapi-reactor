@@ -278,6 +278,14 @@ cms/
 3. Использовать переменные окружения для secrets
 4. Настроить HTTPS через reverse proxy (nginx)
 
+### Деплой (Railway или VPS)
+
+- В репозитории добавлены готовые GitHub Actions:
+  - `CI` — сборка Strapi на каждый push/PR
+  - `Deploy to Railway` — деплой в Railway по push в `main` (нужны `RAILWAY_TOKEN`, `RAILWAY_PROJECT_ID`, `RAILWAY_SERVICE_ID`)
+  - `Build and Deploy to VPS (Docker)` — сборка образа в GHCR и деплой на VPS через SSH (нужны `VPS_*` и `GHCR_*` секреты)
+- Подробная инструкция: см. `DEPLOYMENT.md`
+
 ### Пример .env для продакшена
 
 ```env
@@ -309,6 +317,16 @@ SMTP_FROM_NAME=REACTOR Website
 # Contact Form
 CONTACT_FORM_RECIPIENTS=admin@example.com,sales@example.com
 CONTACT_FORM_SUBJECT=Новая заявка с сайта REACTOR
+```
+
+Дополнительно для продакшена:
+
+```env
+# Разрешённые origins для CORS (через запятую)
+CORS_ORIGIN=https://your-frontend.example.com
+
+# Публичный URL CMS (для генерации ссылок)
+PUBLIC_URL=https://cms.example.com
 ```
 
 ## Troubleshooting

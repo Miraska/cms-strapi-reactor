@@ -20,6 +20,7 @@
     "@strapi/plugin-cloud": "5.31.2",
     "@strapi/plugin-users-permissions": "5.31.2",
     "@strapi/strapi": "5.31.2",
+		"pg": "^8.13.1",
     "better-sqlite3": "12.4.1",
     "nodemailer": "^6.10.1",
     "react": "^18.0.0",
