@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_article_toc_items",
+  "info": {
+    "displayName": "Table of Contents Item",
+    "description": "A single item in the table of contents for article navigation",
+    "icon": "bulletList"
+  },
+  "attributes": {
+    "anchorId": {
+      "type": "string",
+      "required": true,
+      "minLength": 1
+    },
+    "label": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+
