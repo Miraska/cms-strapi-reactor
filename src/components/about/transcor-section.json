@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_about_transcor_sections",
+  "info": {
+    "displayName": "About Transcor Section",
+    "description": "The Transcor Method section",
+    "icon": "atom"
+  },
+  "attributes": {
+    "kicker": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+

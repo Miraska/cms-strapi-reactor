@@ -4,31 +4,24 @@ export default {
   /**
    * An asynchronous register function that runs before
    * your application is initialized.
-   *
-   * This gives you an opportunity to extend code.
    */
   register(/* { strapi }: { strapi: Core.Strapi } */) {},
 
   /**
    * An asynchronous bootstrap function that runs before
    * your application gets started.
-   *
-   * This gives you an opportunity to set up your data model,
-   * run jobs, or perform some special logic.
    */
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
-    // Set up public permissions for Post API on first run
     await setupPublicPermissions(strapi);
   },
 };
 
 /**
- * Configure public permissions for the Post content type
- * This allows unauthenticated users to read posts
+ * Configure public permissions for content types
+ * This allows unauthenticated users to read published content
  */
 async function setupPublicPermissions(strapi: Core.Strapi) {
   try {
-    // Find the public role
     const publicRole = await strapi.db.query('plugin::users-permissions.role').findOne({
       where: { type: 'public' },
     });
@@ -38,11 +31,23 @@ async function setupPublicPermissions(strapi: Core.Strapi) {
       return;
     }
 
-    // Define the permissions we want to grant
-    const permissions = [{ action: 'api::post.post.find' }, { action: 'api::post.post.findOne' }];
+    // Define all public permissions for page APIs
+    const permissions = [
+      // Posts
+      { action: 'api::post.post.find' },
+      { action: 'api::post.post.findOne' },
+      // Page Content - Individual Pages
+      { action: 'api::home-page.home-page.find' },
+      { action: 'api::about-page.about-page.find' },
+      { action: 'api::technology-page.technology-page.find' },
+      { action: 'api::investment-page.investment-page.find' },
+      { action: 'api::partners-page.partners-page.find' },
+      { action: 'api::contact-page.contact-page.find' },
+      // Global Settings
+      { action: 'api::global-setting.global-setting.find' },
+    ];
 
     for (const perm of permissions) {
-      // Check if permission already exists
       const existingPermission = await strapi.db
         .query('plugin::users-permissions.permission')
         .findOne({
@@ -53,7 +58,6 @@ async function setupPublicPermissions(strapi: Core.Strapi) {
         });
 
       if (!existingPermission) {
-        // Create the permission
         await strapi.db.query('plugin::users-permissions.permission').create({
           data: {
             action: perm.action,
@@ -64,7 +68,7 @@ async function setupPublicPermissions(strapi: Core.Strapi) {
       }
     }
 
-    strapi.log.info('Public permissions for Post API configured successfully');
+    strapi.log.info('Public permissions configured successfully');
   } catch (error) {
     strapi.log.error('Failed to set up public permissions:', error);
   }

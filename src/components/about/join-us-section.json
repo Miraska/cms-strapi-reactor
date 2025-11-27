@@ -1,0 +1,47 @@
+{
+  "collectionName": "components_about_join_us_sections",
+  "info": {
+    "displayName": "About Join Us Section",
+    "description": "Join Us section",
+    "icon": "handHeart"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "text1": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "text2": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "text3": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+

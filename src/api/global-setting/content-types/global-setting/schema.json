@@ -1,0 +1,148 @@
+{
+  "kind": "singleType",
+  "collectionName": "global_settings",
+  "info": {
+    "singularName": "global-setting",
+    "pluralName": "global-settings",
+    "displayName": "⚙️ Global Settings",
+    "description": "Global site settings: branding, navigation, footer, common texts, and contact form configuration",
+    "mainField": "siteName"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "siteName": {
+      "type": "string",
+      "default": "REACTOR",
+      "required": true
+    },
+    "siteDescription": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "favicon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "navigation": {
+      "type": "component",
+      "repeatable": false,
+      "component": "global.navigation",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "navItems": {
+      "type": "component",
+      "repeatable": true,
+      "component": "global.nav-item",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "footer": {
+      "type": "component",
+      "repeatable": false,
+      "component": "global.footer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "common": {
+      "type": "component",
+      "repeatable": false,
+      "component": "global.common",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "generationOpportunity": {
+      "type": "component",
+      "repeatable": false,
+      "component": "global.generation-opportunity",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "socialLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "global.social-link",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "investButtonUrl": {
+      "type": "string",
+      "default": "https://goldenafrica-invest.com"
+    },
+    "investButtonText": {
+      "type": "string",
+      "default": "Invest Now",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "contactFormEmails": {
+      "type": "json",
+      "required": true,
+      "default": ["example@gmail.com"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "contactFormSubject": {
+      "type": "string",
+      "default": "New inquiry from REACTOR website",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

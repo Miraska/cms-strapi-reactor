@@ -1,0 +1,71 @@
+{
+  "kind": "singleType",
+  "collectionName": "partners_pages",
+  "info": {
+    "singularName": "partners-page",
+    "pluralName": "partners-pages",
+    "displayName": "🤝 Partners Page",
+    "description": "Partners page content with all sections",
+    "mainField": "title"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Partners Page",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "hero": {
+      "type": "component",
+      "repeatable": false,
+      "component": "partners.hero-section",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "moreThanCompany": {
+      "type": "component",
+      "repeatable": false,
+      "component": "partners.more-than-company-section",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "list": {
+      "type": "component",
+      "repeatable": false,
+      "component": "partners.list-section",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,47 @@
+{
+  "collectionName": "components_home_technology_sections",
+  "info": {
+    "displayName": "Home Technology Section",
+    "description": "How does the technology work section on home page",
+    "icon": "cog"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "processText": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "synthesisText": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "altersText": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+

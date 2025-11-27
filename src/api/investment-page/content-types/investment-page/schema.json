@@ -1,0 +1,101 @@
+{
+  "kind": "singleType",
+  "collectionName": "investment_pages",
+  "info": {
+    "singularName": "investment-page",
+    "pluralName": "investment-pages",
+    "displayName": "💰 Investment Page",
+    "description": "Investment page content with all sections",
+    "mainField": "title"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Investment Page",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "hero": {
+      "type": "component",
+      "repeatable": false,
+      "component": "investment.hero-section",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "whyTrustUs": {
+      "type": "component",
+      "repeatable": false,
+      "component": "investment.why-trust-us-section",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "format": {
+      "type": "component",
+      "repeatable": false,
+      "component": "investment.format-section",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "profit": {
+      "type": "component",
+      "repeatable": false,
+      "component": "investment.profit-section",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "whyInvest": {
+      "type": "component",
+      "repeatable": false,
+      "component": "investment.why-invest-section",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "anyone": {
+      "type": "component",
+      "repeatable": false,
+      "component": "investment.anyone-section",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+

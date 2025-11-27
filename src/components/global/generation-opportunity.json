@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_global_generation_opportunities",
+  "info": {
+    "displayName": "Generation Opportunity",
+    "description": "Once-in-a-generation opportunity section used on multiple pages",
+    "icon": "star"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "buttonText": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+

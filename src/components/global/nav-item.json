@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_global_nav_items",
+  "info": {
+    "displayName": "Navigation Item",
+    "description": "Navigation menu item with label and URL",
+    "icon": "cursor"
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "path": {
+      "type": "string",
+      "required": true,
+      "default": "/"
+    },
+    "isExternal": {
+      "type": "boolean",
+      "default": false
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
+

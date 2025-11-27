@@ -7,6 +7,7 @@ export default ({ env: _env }) => ({
       locales: ['en', 'ru', 'vi', 'fr'],
     },
   },
+  
   // Upload plugin configuration
   upload: {
     config: {
@@ -25,10 +26,9 @@ export default ({ env: _env }) => ({
       },
     },
   },
-  // Optional: Install CKEditor for advanced rich text editing
-  // npm install @ckeditor/strapi-plugin-ckeditor
-  // Then uncomment:
-  // ckeditor5: {
-  //   enabled: true,
-  // },
+
+  // CKEditor for advanced rich text editing
+  ckeditor5: {
+    enabled: true,
+  },
 });

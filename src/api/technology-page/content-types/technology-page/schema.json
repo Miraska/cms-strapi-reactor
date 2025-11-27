@@ -1,0 +1,90 @@
+{
+  "kind": "singleType",
+  "collectionName": "technology_pages",
+  "info": {
+    "singularName": "technology-page",
+    "pluralName": "technology-pages",
+    "displayName": "⚡ Technology Page",
+    "description": "Technology page content with all sections",
+    "mainField": "title"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "default": "Technology Page"
+    },
+    "seo": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo",
+      "repeatable": false
+    },
+    "uniqueFeatures": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "technology.unique-features-section",
+      "repeatable": false
+    },
+    "resonant": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "technology.resonant-section",
+      "repeatable": false
+    },
+    "scientific": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "technology.scientific-section",
+      "repeatable": false
+    },
+    "controlledRollout": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "technology.controlled-rollout-section",
+      "repeatable": false
+    },
+    "carousel": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "technology.carousel-section",
+      "repeatable": false
+    }
+  }
+}

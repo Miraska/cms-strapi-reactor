@@ -64,10 +64,10 @@ async function getContactConfig(strapi: Core.Strapi): Promise<{ recipients: stri
 
   let subject = process.env.CONTACT_FORM_SUBJECT || 'Новая заявка с сайта REACTOR';
 
-  // 2) Fallback to Site Settings in admin if env not provided
+  // 2) Fallback to Global Settings in admin if env not provided
   if (recipients.length === 0) {
     try {
-      const settings = await strapi.documents('api::site-setting.site-setting').findFirst();
+      const settings = await strapi.documents('api::global-setting.global-setting').findFirst();
       const settingsRecipients: string[] | undefined = (settings as any)?.contactFormEmails;
       const settingsSubject: string | undefined = (settings as any)?.contactFormSubject;
 
@@ -79,7 +79,7 @@ async function getContactConfig(strapi: Core.Strapi): Promise<{ recipients: stri
         subject = settingsSubject;
       }
     } catch (error) {
-      strapi.log.error('Failed to read Site Settings for contact config:', error);
+      strapi.log.error('Failed to read Global Settings for contact config:', error);
     }
   }
 

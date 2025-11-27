@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_investment_hero_sections",
+  "info": {
+    "displayName": "Investment Hero Section",
+    "description": "Hero section for investment page",
+    "icon": "landscape"
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+
