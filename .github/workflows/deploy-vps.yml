@@ -15,9 +15,6 @@ permissions:
 env:
   IMAGE_NAME: reactor-cms
   REGISTRY: ghcr.io
-  OWNER_SLUG: ${{ toLower(github.repository_owner) }}
-  IMAGE_LATEST: ghcr.io/${{ env.OWNER_SLUG }}/reactor-cms:latest
-  IMAGE_SHA: ghcr.io/${{ env.OWNER_SLUG }}/reactor-cms:${{ github.sha }}
 
 jobs:
   build-and-push:
@@ -36,6 +33,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Prepare image tags (lowercase owner)
+        id: meta
+        run: |
+          echo "owner=${OWNER,,}" >> $GITHUB_OUTPUT
+          echo "image_latest=ghcr.io/${OWNER,,}/${IMAGE_NAME}:latest" >> $GITHUB_OUTPUT
+          echo "image_sha=ghcr.io/${OWNER,,}/${IMAGE_NAME}:${GITHUB_SHA}" >> $GITHUB_OUTPUT
+        env:
+          OWNER: ${{ github.repository_owner }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          GITHUB_SHA: ${{ github.sha }}
+
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
@@ -43,9 +51,9 @@ jobs:
           file: ./cms-strapi-reactor/Dockerfile
           push: true
           tags: |
-            ${{ env.IMAGE_LATEST }}
-            ${{ env.IMAGE_SHA }}
-          cache-from: type=registry,ref=${{ env.IMAGE_LATEST }}
+            ${{ steps.meta.outputs.image_latest }}
+            ${{ steps.meta.outputs.image_sha }}
+          cache-from: type=registry,ref=${{ steps.meta.outputs.image_latest }}
           cache-to: type=inline
 
   deploy:
@@ -63,6 +71,14 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
 
+      - name: Prepare image tag (lowercase owner)
+        id: meta
+        run: |
+          echo "image_latest=ghcr.io/${OWNER,,}/${IMAGE_NAME}:latest" >> $GITHUB_OUTPUT
+        env:
+          OWNER: ${{ github.repository_owner }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+
       - name: Deploy on VPS via SSH
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
@@ -71,7 +87,7 @@ jobs:
           VPS_ENV: ${{ secrets.VPS_ENV }}
           GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-          IMAGE_LATEST: ${{ env.IMAGE_LATEST }}
+          IMAGE_LATEST: ${{ steps.meta.outputs.image_latest }}
         run: |
           REMOTE="${VPS_USER}@${VPS_HOST}"
           ssh "$REMOTE" "mkdir -p ${VPS_APP_DIR}"
