@@ -32,7 +32,12 @@ jobs:
         run: npm ci
 
       - name: Typecheck
-        run: npm run typecheck
+        run: |
+          if [ -f tsconfig.json ]; then
+            npx tsc --noEmit
+          else
+            echo "No tsconfig.json found; skipping typecheck"
+          fi
 
       - name: Build (Strapi)
         run: npm run build
