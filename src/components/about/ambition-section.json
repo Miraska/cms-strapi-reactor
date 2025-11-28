@@ -1,9 +1,9 @@
 {
   "collectionName": "components_about_ambition_sections",
   "info": {
-    "displayName": "About Ambition Section",
-    "description": "Our Ambition section",
-    "icon": "rocket"
+    "displayName": "Ambition Section",
+    "description": "About page ambition/goals section with list items",
+    "icon": "star"
   },
   "attributes": {
     "kicker": {
@@ -16,7 +16,7 @@
       }
     },
     "title": {
-      "type": "string",
+      "type": "text",
       "required": false,
       "pluginOptions": {
         "i18n": {
@@ -33,42 +33,21 @@
         }
       }
     },
-    "goal1": {
-      "type": "text",
-      "required": false,
+    "goals": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.text-item",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "goal2": {
-      "type": "text",
+    "image": {
+      "type": "media",
+      "multiple": false,
       "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "goal3": {
-      "type": "text",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "goal4": {
-      "type": "text",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      "allowedTypes": ["images"]
     }
   }
 }
-

@@ -1,21 +1,21 @@
 {
-  "collectionName": "components_sections_ctas",
+  "collectionName": "components_sections_invest_previews",
   "info": {
-    "displayName": "CTA Section",
-    "description": "Call-to-action section with title, description and button",
-    "icon": "cursor"
+    "displayName": "Invest Preview Section",
+    "description": "Investment preview section with cards for home page",
+    "icon": "chartBubble"
   },
   "attributes": {
     "title": {
       "type": "string",
-      "required": true,
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "description": {
+    "subtitle": {
       "type": "text",
       "required": false,
       "pluginOptions": {
@@ -24,10 +24,10 @@
         }
       }
     },
-    "button": {
+    "items": {
       "type": "component",
-      "repeatable": false,
-      "component": "shared.button",
+      "repeatable": true,
+      "component": "shared.feature-item",
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -36,3 +36,4 @@
     }
   }
 }
+

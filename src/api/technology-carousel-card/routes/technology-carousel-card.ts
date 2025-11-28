@@ -1,10 +1,10 @@
 /**
- * team-member router
+ * technology-carousel-card router
  */
 
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreRouter('api::team-member.team-member', {
+export default factories.createCoreRouter('api::technology-carousel-card.technology-carousel-card', {
   config: {
     find: {
       auth: false, // Allow public access to find (list all)
@@ -14,3 +14,4 @@ export default factories.createCoreRouter('api::team-member.team-member', {
     },
   },
 });
+

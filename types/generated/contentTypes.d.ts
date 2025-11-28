@@ -411,14 +411,19 @@ export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     sections: Schema.Attribute.DynamicZone<
       [
-        'sections.hero',
+        'sections.rich-content',
         'sections.text-with-image',
         'sections.features',
         'sections.stats',
-        'sections.team-carousel',
-        'sections.rich-content',
-        'sections.cta',
         'sections.accordion',
+        'sections.cta',
+        'sections.hero',
+        'sections.team-carousel',
+        'sections.about-preview',
+        'sections.market',
+        'about.ambition-section',
+        'about.profit-section',
+        'about.join-us-section',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -468,12 +473,13 @@ export interface ApiContactPageContactPage extends Struct.SingleTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     sections: Schema.Attribute.DynamicZone<
       [
-        'sections.hero',
         'sections.contact-info',
+        'sections.hero',
         'sections.text-with-image',
         'sections.accordion',
         'sections.rich-content',
         'sections.cta',
+        'sections.features',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -649,16 +655,14 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
       [
         'sections.hero',
         'sections.about-preview',
+        'sections.technology-preview',
         'sections.market',
-        'sections.features',
-        'sections.stats',
+        'sections.invest-preview',
         'sections.tariffs',
         'sections.team-carousel',
         'sections.crowdinvesting',
         'sections.why-trust-us',
-        'sections.technology-preview',
         'sections.cta',
-        'sections.rich-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -714,11 +718,14 @@ export interface ApiInvestmentPageInvestmentPage extends Struct.SingleTypeSchema
         'sections.investor-types',
         'sections.stats',
         'sections.features',
-        'sections.tariffs',
         'sections.why-trust-us',
+        'sections.tariffs',
         'sections.cta',
+        'sections.text-with-image',
         'sections.accordion',
         'sections.rich-content',
+        'investment.hero-section',
+        'investment.why-trust-us-section',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -821,6 +828,10 @@ export interface ApiPartnersPagePartnersPage extends Struct.SingleTypeSchema {
         'sections.stats',
         'sections.cta',
         'sections.rich-content',
+        'sections.accordion',
+        'sections.about-preview',
+        'partners.hero-section',
+        'partners.more-than-company-section',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -966,6 +977,55 @@ export interface ApiTeamMemberTeamMember extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiTechnologyCarouselCardTechnologyCarouselCard
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'technology_carousel_cards';
+  info: {
+    description: 'Cards for technology preview carousel section';
+    displayName: 'Technology Carousel Card';
+    pluralName: 'technology-carousel-cards';
+    singularName: 'technology-carousel-card';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    description: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    icon: Schema.Attribute.Media<'images'>;
+    image: Schema.Attribute.Media<'images'>;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::technology-carousel-card.technology-carousel-card'
+    >;
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiTechnologyPageTechnologyPage extends Struct.SingleTypeSchema {
   collectionName: 'technology_pages';
   info: {
@@ -990,15 +1050,14 @@ export interface ApiTechnologyPageTechnologyPage extends Struct.SingleTypeSchema
     publishedAt: Schema.Attribute.DateTime;
     sections: Schema.Attribute.DynamicZone<
       [
-        'sections.hero',
-        'sections.features',
-        'sections.text-with-image',
-        'sections.stats',
-        'sections.image-carousel',
+        'sections.about-preview',
         'sections.technology-preview',
-        'sections.rich-content',
+        'sections.why-trust-us',
         'sections.cta',
-        'sections.accordion',
+        'technology.resonant-section',
+        'technology.scientific-section',
+        'technology.controlled-rollout-section',
+        'sections.features',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -1461,6 +1520,7 @@ declare module '@strapi/strapi' {
       'api::partners-page.partners-page': ApiPartnersPagePartnersPage;
       'api::post.post': ApiPostPost;
       'api::team-member.team-member': ApiTeamMemberTeamMember;
+      'api::technology-carousel-card.technology-carousel-card': ApiTechnologyCarouselCardTechnologyCarouselCard;
       'api::technology-page.technology-page': ApiTechnologyPageTechnologyPage;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

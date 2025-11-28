@@ -39,12 +39,13 @@
     "sections": {
       "type": "dynamiczone",
       "components": [
-        "sections.hero",
         "sections.contact-info",
+        "sections.hero",
         "sections.text-with-image",
         "sections.accordion",
         "sections.rich-content",
-        "sections.cta"
+        "sections.cta",
+        "sections.features"
       ],
       "pluginOptions": {
         "i18n": {

@@ -3,9 +3,9 @@ import type { Schema, Struct } from '@strapi/strapi';
 export interface AboutAmbitionSection extends Struct.ComponentSchema {
   collectionName: 'components_about_ambition_sections';
   info: {
-    description: 'Our Ambition section';
-    displayName: 'About Ambition Section';
-    icon: 'rocket';
+    description: 'About page ambition/goals section with list items';
+    displayName: 'Ambition Section';
+    icon: 'star';
   };
   attributes: {
     description: Schema.Attribute.Text &
@@ -14,37 +14,20 @@ export interface AboutAmbitionSection extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    goal1: Schema.Attribute.Text &
+    goals: Schema.Attribute.Component<'shared.text-item', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    goal2: Schema.Attribute.Text &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    goal3: Schema.Attribute.Text &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    goal4: Schema.Attribute.Text &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    image: Schema.Attribute.Media<'images'>;
     kicker: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    title: Schema.Attribute.String &
+    title: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -85,24 +68,19 @@ export interface AboutHeroSection extends Struct.ComponentSchema {
 export interface AboutJoinUsSection extends Struct.ComponentSchema {
   collectionName: 'components_about_join_us_sections';
   info: {
-    description: 'Join Us section';
-    displayName: 'About Join Us Section';
+    description: 'About page CTA section with title and multiple texts';
+    displayName: 'Join Us Section';
     icon: 'handHeart';
   };
   attributes: {
-    text1: Schema.Attribute.Text &
+    backgroundImage: Schema.Attribute.Media<'images'>;
+    button: Schema.Attribute.Component<'shared.button', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    text2: Schema.Attribute.Text &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    text3: Schema.Attribute.Text &
+    texts: Schema.Attribute.Component<'shared.text-item', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -173,42 +151,13 @@ export interface AboutMarketWaitingSection extends Struct.ComponentSchema {
 export interface AboutProfitSection extends Struct.ComponentSchema {
   collectionName: 'components_about_profit_sections';
   info: {
-    description: 'Profit and impact section';
-    displayName: 'About Profit Section';
-    icon: 'chartPie';
+    description: 'About page profit cards with scroll animation';
+    displayName: 'Profit Cards Section';
+    icon: 'chartBubble';
   };
   attributes: {
-    card1Text: Schema.Attribute.Text &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    card1Title: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    card2Text: Schema.Attribute.Text &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    card2Title: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    card3Text: Schema.Attribute.Text &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    card3Title: Schema.Attribute.String &
+    cards: Schema.Attribute.Component<'shared.card-item', true> &
+      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1495,7 +1444,7 @@ export interface PartnersMoreThanCompanySection extends Struct.ComponentSchema {
 export interface SectionsAboutPreview extends Struct.ComponentSchema {
   collectionName: 'components_sections_about_previews';
   info: {
-    description: 'Company about section with text and quote';
+    description: 'Company about section with animated text and quote';
     displayName: 'About Preview Section';
     icon: 'information';
   };
@@ -1506,14 +1455,13 @@ export interface SectionsAboutPreview extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    image: Schema.Attribute.Media<'images'>;
     quote: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    text: Schema.Attribute.RichText &
+    text: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1649,7 +1597,6 @@ export interface SectionsCrowdinvesting extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    image: Schema.Attribute.Media<'images'>;
     minimumEntryAmount: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1679,9 +1626,6 @@ export interface SectionsCta extends Struct.ComponentSchema {
     icon: 'cursor';
   };
   attributes: {
-    backgroundGradient: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'>;
-    backgroundImage: Schema.Attribute.Media<'images'>;
     button: Schema.Attribute.Component<'shared.button', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1740,22 +1684,17 @@ export interface SectionsFeatures extends Struct.ComponentSchema {
 export interface SectionsHero extends Struct.ComponentSchema {
   collectionName: 'components_sections_heroes';
   info: {
-    description: 'Hero section with title, subtitle, CTA and background';
+    description: 'Hero section with title, subtitle and CTA button';
     displayName: 'Hero Section';
     icon: 'landscape';
   };
   attributes: {
-    alignment: Schema.Attribute.Enumeration<['left', 'center', 'right']> &
-      Schema.Attribute.DefaultTo<'center'>;
-    backgroundGradient: Schema.Attribute.String & Schema.Attribute.DefaultTo<''>;
-    backgroundImage: Schema.Attribute.Media<'images'>;
     cta: Schema.Attribute.Component<'shared.button', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    showParticles: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     subtitle: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1785,6 +1724,35 @@ export interface SectionsImageCarousel extends Struct.ComponentSchema {
     showNavigation: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     showPagination: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     slides: Schema.Attribute.Component<'shared.media-item', true> & Schema.Attribute.Required;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+  };
+}
+
+export interface SectionsInvestPreview extends Struct.ComponentSchema {
+  collectionName: 'components_sections_invest_previews';
+  info: {
+    description: 'Investment preview section with cards for home page';
+    displayName: 'Invest Preview Section';
+    icon: 'chartBubble';
+  };
+  attributes: {
+    items: Schema.Attribute.Component<'shared.feature-item', true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    subtitle: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1888,24 +1856,98 @@ export interface SectionsInvestorTypes extends Struct.ComponentSchema {
 export interface SectionsMarket extends Struct.ComponentSchema {
   collectionName: 'components_sections_markets';
   info: {
-    description: 'Market opportunity section with benefits and stats';
+    description: 'Applications & Market section with cards, benefits and images';
     displayName: 'Market Section';
     icon: 'chartCircle';
   };
   attributes: {
-    backgroundImage: Schema.Attribute.Media<'images'>;
+    avatars: Schema.Attribute.Media<'images', true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     benefits: Schema.Attribute.Component<'shared.text-item', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    stats: Schema.Attribute.Component<'shared.stat-item', true> &
+    bottomCellLabel: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
+      }> &
+      Schema.Attribute.DefaultTo<'Other markets'>;
+    bottomCellValue: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'Hundreds of billions'>;
+    leftCardImage: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
       }>;
+    leftCardImageAlt: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'Gold market visualization'>;
+    leftCardLabel: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'Gold market'>;
+    leftCardValue: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'$285 Billion'>;
+    rightCardDescription: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'Profit per device'>;
+    rightCardImage: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    rightCardImageAlt: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'Diverse applications visualization'>;
+    rightCardSubtitle: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'/month'>;
+    rightCardTitle: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'$1 Million'>;
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -2069,7 +2111,6 @@ export interface SectionsTeamCarousel extends Struct.ComponentSchema {
     icon: 'user';
   };
   attributes: {
-    autoplay: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     members: Schema.Attribute.Relation<'oneToMany', 'api::team-member.team-member'>;
     nextLabel: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -2085,13 +2126,6 @@ export interface SectionsTeamCarousel extends Struct.ComponentSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<'Previous'>;
-    showNavigation: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    subtitle: Schema.Attribute.Text &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -2104,7 +2138,7 @@ export interface SectionsTeamCarousel extends Struct.ComponentSchema {
 export interface SectionsTechnologyPreview extends Struct.ComponentSchema {
   collectionName: 'components_sections_technology_previews';
   info: {
-    description: 'Technology overview section with process description';
+    description: 'Technology overview section with carousel cards';
     displayName: 'Technology Preview Section';
     icon: 'cog';
   };
@@ -2115,13 +2149,10 @@ export interface SectionsTechnologyPreview extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    cta: Schema.Attribute.Component<'shared.button', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    image: Schema.Attribute.Media<'images'>;
+    carouselCards: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::technology-carousel-card.technology-carousel-card'
+    >;
     processText: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -2190,17 +2221,11 @@ export interface SectionsTextWithImage extends Struct.ComponentSchema {
 export interface SectionsWhyTrustUs extends Struct.ComponentSchema {
   collectionName: 'components_sections_why_trust_us';
   info: {
-    description: 'Interactive trust section with toggle and cards';
+    description: 'Interactive trust banner with toggle text';
     displayName: 'Why Trust Us Section';
     icon: 'shield';
   };
   attributes: {
-    cards: Schema.Attribute.Component<'shared.card-item', true> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     primaryText: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -2216,25 +2241,17 @@ export interface SectionsWhyTrustUs extends Struct.ComponentSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<'REACTOR'>;
-    showToggle: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    title: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
   };
 }
 
 export interface SharedButton extends Struct.ComponentSchema {
   collectionName: 'components_shared_buttons';
   info: {
-    description: 'A CTA button with text, URL and styling';
+    description: 'A CTA button with text and URL';
     displayName: 'Button';
     icon: 'cursor';
   };
   attributes: {
-    isExternal: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     text: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -2243,8 +2260,6 @@ export interface SharedButton extends Struct.ComponentSchema {
         };
       }>;
     url: Schema.Attribute.String & Schema.Attribute.Required;
-    variant: Schema.Attribute.Enumeration<['primary', 'secondary', 'yellow', 'white', 'outline']> &
-      Schema.Attribute.DefaultTo<'primary'>;
   };
 }
 
@@ -2276,7 +2291,7 @@ export interface SharedCardItem extends Struct.ComponentSchema {
 export interface SharedFeatureItem extends Struct.ComponentSchema {
   collectionName: 'components_shared_feature_items';
   info: {
-    description: 'A feature card with icon, title, description and optional image';
+    description: 'A feature card with title and description';
     displayName: 'Feature Item';
     icon: 'star';
   };
@@ -2287,8 +2302,6 @@ export interface SharedFeatureItem extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    icon: Schema.Attribute.Media<'images'>;
-    image: Schema.Attribute.Media<'images'>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -2377,7 +2390,7 @@ export interface SharedSeo extends Struct.ComponentSchema {
 export interface SharedStatItem extends Struct.ComponentSchema {
   collectionName: 'components_shared_stat_items';
   info: {
-    description: 'A statistic item with value, label and optional icon';
+    description: 'A statistic item with value, label and description';
     displayName: 'Stat Item';
     icon: 'chartBubble';
   };
@@ -2388,7 +2401,6 @@ export interface SharedStatItem extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    icon: Schema.Attribute.Media<'images'>;
     label: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -2501,30 +2513,18 @@ export interface TechnologyCarouselSection extends Struct.ComponentSchema {
 export interface TechnologyControlledRolloutSection extends Struct.ComponentSchema {
   collectionName: 'components_technology_controlled_rollout_sections';
   info: {
-    description: 'Controlled rollout section';
-    displayName: 'Technology Controlled Rollout Section';
-    icon: 'rocket';
+    description: 'Technology page controlled rollout section with columns';
+    displayName: 'Controlled Rollout Section';
+    icon: 'expand';
   };
   attributes: {
-    caption1: Schema.Attribute.String &
+    columns: Schema.Attribute.Component<'shared.card-item', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    caption2: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    caption3: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    subtitle: Schema.Attribute.String &
+    subtitle: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -2542,24 +2542,13 @@ export interface TechnologyControlledRolloutSection extends Struct.ComponentSche
 export interface TechnologyResonantSection extends Struct.ComponentSchema {
   collectionName: 'components_technology_resonant_sections';
   info: {
-    description: 'How does the technology work section';
-    displayName: 'Technology Resonant Mechanism Section';
-    icon: 'atom';
+    description: 'Technology page resonant mechanism explanation section';
+    displayName: 'Resonant Mechanism Section';
+    icon: 'cog';
   };
   attributes: {
-    pill1: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    pill2: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    pill3: Schema.Attribute.String &
+    image: Schema.Attribute.Media<'images'>;
+    pills: Schema.Attribute.Component<'shared.text-item', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -2577,7 +2566,7 @@ export interface TechnologyResonantSection extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    title: Schema.Attribute.String &
+    title: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -2589,29 +2578,18 @@ export interface TechnologyResonantSection extends Struct.ComponentSchema {
 export interface TechnologyScientificSection extends Struct.ComponentSchema {
   collectionName: 'components_technology_scientific_sections';
   info: {
-    description: 'Scientific foundation section';
-    displayName: 'Technology Scientific Foundation Section';
+    description: 'Technology page scientific foundation section with bullets';
+    displayName: 'Scientific Foundation Section';
     icon: 'book';
   };
   attributes: {
-    bullet1: Schema.Attribute.String &
+    bullets: Schema.Attribute.Component<'shared.text-item', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    bullet2: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    bullet3: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    image: Schema.Attribute.Media<'images'>;
     text: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -2735,6 +2713,7 @@ declare module '@strapi/strapi' {
       'sections.features': SectionsFeatures;
       'sections.hero': SectionsHero;
       'sections.image-carousel': SectionsImageCarousel;
+      'sections.invest-preview': SectionsInvestPreview;
       'sections.investment-benefits': SectionsInvestmentBenefits;
       'sections.investment-format': SectionsInvestmentFormat;
       'sections.investor-types': SectionsInvestorTypes;

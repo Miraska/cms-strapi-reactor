@@ -2,7 +2,7 @@
   "collectionName": "components_sections_technology_previews",
   "info": {
     "displayName": "Technology Preview Section",
-    "description": "Technology overview section with process description",
+    "description": "Technology overview section with carousel cards",
     "icon": "cog"
   },
   "attributes": {
@@ -42,22 +42,10 @@
         }
       }
     },
-    "image": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
-    },
-    "cta": {
-      "type": "component",
-      "repeatable": false,
-      "component": "shared.button",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+    "carouselCards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::technology-carousel-card.technology-carousel-card"
     }
   }
 }
-

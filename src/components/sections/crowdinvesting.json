@@ -60,13 +60,6 @@
           "localized": true
         }
       }
-    },
-    "image": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
     }
   }
 }
-

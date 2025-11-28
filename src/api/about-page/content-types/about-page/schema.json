@@ -39,14 +39,19 @@
     "sections": {
       "type": "dynamiczone",
       "components": [
-        "sections.hero",
+        "sections.rich-content",
         "sections.text-with-image",
         "sections.features",
         "sections.stats",
-        "sections.team-carousel",
-        "sections.rich-content",
+        "sections.accordion",
         "sections.cta",
-        "sections.accordion"
+        "sections.hero",
+        "sections.team-carousel",
+        "sections.about-preview",
+        "sections.market",
+        "about.ambition-section",
+        "about.profit-section",
+        "about.join-us-section"
       ],
       "pluginOptions": {
         "i18n": {

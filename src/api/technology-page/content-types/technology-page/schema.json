@@ -39,15 +39,14 @@
     "sections": {
       "type": "dynamiczone",
       "components": [
-        "sections.hero",
-        "sections.features",
-        "sections.text-with-image",
-        "sections.stats",
-        "sections.image-carousel",
+        "sections.about-preview",
         "sections.technology-preview",
-        "sections.rich-content",
+        "sections.why-trust-us",
         "sections.cta",
-        "sections.accordion"
+        "technology.resonant-section",
+        "technology.scientific-section",
+        "technology.controlled-rollout-section",
+        "sections.features"
       ],
       "pluginOptions": {
         "i18n": {

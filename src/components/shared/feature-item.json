@@ -2,7 +2,7 @@
   "collectionName": "components_shared_feature_items",
   "info": {
     "displayName": "Feature Item",
-    "description": "A feature card with icon, title, description and optional image",
+    "description": "A feature card with title and description",
     "icon": "star"
   },
   "attributes": {
@@ -23,19 +23,6 @@
           "localized": true
         }
       }
-    },
-    "icon": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
-    },
-    "image": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
     }
   }
 }
-

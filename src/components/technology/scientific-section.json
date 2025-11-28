@@ -1,8 +1,8 @@
 {
   "collectionName": "components_technology_scientific_sections",
   "info": {
-    "displayName": "Technology Scientific Foundation Section",
-    "description": "Scientific foundation section",
+    "displayName": "Scientific Foundation Section",
+    "description": "Technology page scientific foundation section with bullets",
     "icon": "book"
   },
   "attributes": {
@@ -24,33 +24,21 @@
         }
       }
     },
-    "bullet1": {
-      "type": "string",
-      "required": false,
+    "bullets": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.text-item",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "bullet2": {
-      "type": "string",
+    "image": {
+      "type": "media",
+      "multiple": false,
       "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "bullet3": {
-      "type": "string",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      "allowedTypes": ["images"]
     }
   }
 }
-

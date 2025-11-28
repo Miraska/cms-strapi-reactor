@@ -15,27 +15,10 @@
         }
       }
     },
-    "subtitle": {
-      "type": "text",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "members": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::team-member.team-member"
-    },
-    "showNavigation": {
-      "type": "boolean",
-      "default": true
-    },
-    "autoplay": {
-      "type": "boolean",
-      "default": false
     },
     "previousLabel": {
       "type": "string",
@@ -57,4 +40,3 @@
     }
   }
 }
-

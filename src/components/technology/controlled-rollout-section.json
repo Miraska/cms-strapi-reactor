@@ -1,9 +1,9 @@
 {
   "collectionName": "components_technology_controlled_rollout_sections",
   "info": {
-    "displayName": "Technology Controlled Rollout Section",
-    "description": "Controlled rollout section",
-    "icon": "rocket"
+    "displayName": "Controlled Rollout Section",
+    "description": "Technology page controlled rollout section with columns",
+    "icon": "expand"
   },
   "attributes": {
     "title": {
@@ -16,7 +16,7 @@
       }
     },
     "subtitle": {
-      "type": "string",
+      "type": "text",
       "required": false,
       "pluginOptions": {
         "i18n": {
@@ -24,27 +24,10 @@
         }
       }
     },
-    "caption1": {
-      "type": "string",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "caption2": {
-      "type": "string",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "caption3": {
-      "type": "string",
-      "required": false,
+    "columns": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.card-item",
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -53,4 +36,3 @@
     }
   }
 }
-

@@ -2,19 +2,10 @@
   "collectionName": "components_sections_why_trust_us",
   "info": {
     "displayName": "Why Trust Us Section",
-    "description": "Interactive trust section with toggle and cards",
+    "description": "Interactive trust banner with toggle text",
     "icon": "shield"
   },
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "primaryText": {
       "type": "string",
       "required": true,
@@ -33,21 +24,6 @@
           "localized": false
         }
       }
-    },
-    "cards": {
-      "type": "component",
-      "repeatable": true,
-      "component": "shared.card-item",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "showToggle": {
-      "type": "boolean",
-      "default": true
     }
   }
 }
-

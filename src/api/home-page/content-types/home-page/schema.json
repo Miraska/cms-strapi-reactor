@@ -41,16 +41,14 @@
       "components": [
         "sections.hero",
         "sections.about-preview",
+        "sections.technology-preview",
         "sections.market",
-        "sections.features",
-        "sections.stats",
+        "sections.invest-preview",
         "sections.tariffs",
         "sections.team-carousel",
         "sections.crowdinvesting",
         "sections.why-trust-us",
-        "sections.technology-preview",
-        "sections.cta",
-        "sections.rich-content"
+        "sections.cta"
       ],
       "pluginOptions": {
         "i18n": {

@@ -2,7 +2,7 @@
   "collectionName": "components_shared_stat_items",
   "info": {
     "displayName": "Stat Item",
-    "description": "A statistic item with value, label and optional icon",
+    "description": "A statistic item with value, label and description",
     "icon": "chartBubble"
   },
   "attributes": {
@@ -32,13 +32,6 @@
           "localized": true
         }
       }
-    },
-    "icon": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
     }
   }
 }
-

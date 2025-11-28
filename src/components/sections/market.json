@@ -2,13 +2,54 @@
   "collectionName": "components_sections_markets",
   "info": {
     "displayName": "Market Section",
-    "description": "Market opportunity section with benefits and stats",
+    "description": "Applications & Market section with cards, benefits and images",
     "icon": "chartCircle"
   },
   "attributes": {
     "title": {
       "type": "string",
       "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "leftCardValue": {
+      "type": "string",
+      "required": false,
+      "default": "$285 Billion",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "leftCardLabel": {
+      "type": "string",
+      "required": false,
+      "default": "Gold market",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "leftCardImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "leftCardImageAlt": {
+      "type": "string",
+      "required": false,
+      "default": "Gold market visualization",
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -25,22 +66,87 @@
         }
       }
     },
-    "stats": {
-      "type": "component",
-      "repeatable": true,
-      "component": "shared.stat-item",
+    "rightCardTitle": {
+      "type": "string",
+      "required": false,
+      "default": "$1 Million",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "backgroundImage": {
+    "rightCardSubtitle": {
+      "type": "string",
+      "required": false,
+      "default": "/month",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "rightCardDescription": {
+      "type": "string",
+      "required": false,
+      "default": "Profit per device",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "rightCardImage": {
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "rightCardImageAlt": {
+      "type": "string",
+      "required": false,
+      "default": "Diverse applications visualization",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "avatars": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "bottomCellValue": {
+      "type": "string",
+      "required": false,
+      "default": "Hundreds of billions",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "bottomCellLabel": {
+      "type": "string",
+      "required": false,
+      "default": "Other markets",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }
-

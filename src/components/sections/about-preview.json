@@ -2,12 +2,12 @@
   "collectionName": "components_sections_about_previews",
   "info": {
     "displayName": "About Preview Section",
-    "description": "Company about section with text and quote",
+    "description": "Company about section with animated text and quote",
     "icon": "information"
   },
   "attributes": {
     "text": {
-      "type": "richtext",
+      "type": "text",
       "required": false,
       "pluginOptions": {
         "i18n": {
@@ -41,13 +41,6 @@
           "localized": true
         }
       }
-    },
-    "image": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
     }
   }
 }
-

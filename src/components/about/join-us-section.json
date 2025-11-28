@@ -1,8 +1,8 @@
 {
   "collectionName": "components_about_join_us_sections",
   "info": {
-    "displayName": "About Join Us Section",
-    "description": "Join Us section",
+    "displayName": "Join Us Section",
+    "description": "About page CTA section with title and multiple texts",
     "icon": "handHeart"
   },
   "attributes": {
@@ -15,33 +15,31 @@
         }
       }
     },
-    "text1": {
-      "type": "text",
-      "required": false,
+    "texts": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.text-item",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "text2": {
-      "type": "text",
-      "required": false,
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "text3": {
-      "type": "text",
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
       "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      "allowedTypes": ["images"]
     }
   }
 }
-

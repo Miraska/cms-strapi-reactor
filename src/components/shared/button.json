@@ -2,7 +2,7 @@
   "collectionName": "components_shared_buttons",
   "info": {
     "displayName": "Button",
-    "description": "A CTA button with text, URL and styling",
+    "description": "A CTA button with text and URL",
     "icon": "cursor"
   },
   "attributes": {
@@ -18,16 +18,6 @@
     "url": {
       "type": "string",
       "required": true
-    },
-    "variant": {
-      "type": "enumeration",
-      "enum": ["primary", "secondary", "yellow", "white", "outline"],
-      "default": "primary"
-    },
-    "isExternal": {
-      "type": "boolean",
-      "default": false
     }
   }
 }
-

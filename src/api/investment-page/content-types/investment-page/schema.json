@@ -45,11 +45,14 @@
         "sections.investor-types",
         "sections.stats",
         "sections.features",
-        "sections.tariffs",
         "sections.why-trust-us",
+        "sections.tariffs",
         "sections.cta",
+        "sections.text-with-image",
         "sections.accordion",
-        "sections.rich-content"
+        "sections.rich-content",
+        "investment.hero-section",
+        "investment.why-trust-us-section"
       ],
       "pluginOptions": {
         "i18n": {

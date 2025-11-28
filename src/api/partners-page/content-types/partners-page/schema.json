@@ -45,7 +45,11 @@
         "sections.features",
         "sections.stats",
         "sections.cta",
-        "sections.rich-content"
+        "sections.rich-content",
+        "sections.accordion",
+        "sections.about-preview",
+        "partners.hero-section",
+        "partners.more-than-company-section"
       ],
       "pluginOptions": {
         "i18n": {
