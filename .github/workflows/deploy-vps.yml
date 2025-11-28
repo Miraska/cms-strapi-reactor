@@ -240,4 +240,4 @@ jobs:
           fi
 
           # Pull and restart services
-          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && docker compose pull && docker compose up -d --remove-orphans && docker image prune -f"
+          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && IMAGE_LATEST='${IMAGE_LATEST}' docker compose pull && IMAGE_LATEST='${IMAGE_LATEST}' docker compose up -d --remove-orphans && docker image prune -f"
