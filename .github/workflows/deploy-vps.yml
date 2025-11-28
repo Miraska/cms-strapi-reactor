@@ -210,7 +210,8 @@ jobs:
               restart: unless-stopped
 
             postgres:
-              image: postgres:16-alpine
+              # Use Amazon ECR Public mirror to avoid Docker Hub pull rate limits
+              image: public.ecr.aws/docker/library/postgres:16-alpine
               environment:
                 - POSTGRES_DB=${DATABASE_NAME}
                 - POSTGRES_USER=${DATABASE_USERNAME}
@@ -237,6 +238,13 @@ jobs:
             ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "echo \"$GHCR_TOKEN\" | docker login ghcr.io -u \"$GHCR_USERNAME\" --password-stdin"
           else
             echo "Skipping GHCR login: GHCR_USERNAME or GHCR_TOKEN not set"
+          fi
+
+          # Optional: Login to Docker Hub to avoid rate limits for any Hub images (not required with ECR mirror)
+          if [ -n "${DOCKERHUB_USERNAME:-}" ] && [ -n "${DOCKERHUB_TOKEN:-}" ]; then
+            ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "echo \"$DOCKERHUB_TOKEN\" | docker login -u \"$DOCKERHUB_USERNAME\" --password-stdin"
+          else
+            echo "Skipping Docker Hub login: DOCKERHUB_USERNAME or DOCKERHUB_TOKEN not set"
           fi
 
           # Pull and restart services
