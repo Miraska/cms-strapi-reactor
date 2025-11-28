@@ -1,7 +1,7 @@
 ## Deployment Guide (Railway or VPS)
 
 ### 1) Environment variables (required)
-Copy `.env.example` to `.env` and fill values in your deployment platform (do NOT commit secrets).
+Copy `env.example` to `.env` and fill values in your deployment platform (do NOT commit secrets).
 
 Required:
 - APP_KEYS
@@ -28,21 +28,25 @@ Set GitHub repository secrets:
 
 Notes:
 - The Dockerfile is included and will be used by Railway automatically.
-- In Railway project variables, set all variables from `.env.example` (PostgreSQL can be provisioned by Railway; use its `DATABASE_URL` and set `DATABASE_SSL=true`).
+- In Railway project variables, set all variables from `env.example` (PostgreSQL can be provisioned by Railway; use its `DATABASE_URL` and set `DATABASE_SSL=true`).
 
 ---
 
 ### 3) VPS (Docker + Compose)
-The workflow `.github/workflows/deploy-vps.yml` builds the image and pushes to GHCR, then connects to your VPS over SSH and runs `docker compose up -d`.
+The workflow `.github/workflows/deploy-vps.yml` builds the image and pushes to GHCR, then connects to your VPS over SSH and runs `docker compose up -d`. It triggers on pushes to `dev` or `main` that touch `cms-strapi-reactor/**`.
 
 Set GitHub repository secrets:
-- VPS_HOST, VPS_USER, VPS_SSH_KEY (private key)
+- VPS_HOST, VPS_USER, VPS_SSH_KEY (private key for SSH)
 - VPS_APP_DIR (e.g. /opt/cms)
-- VPS_ENV (full contents of your `.env`)
+- VPS_ENV (full contents of your `.env` to be written on the server)
 - GHCR_USERNAME, GHCR_TOKEN (PAT with read:packages on GHCR for pulling the image on the server)
 
 On first deploy, the workflow will create `docker-compose.yml` on the server, log in to GHCR (if creds provided), pull, and start.
 Uploads are persisted in `${VPS_APP_DIR}/public`, PostgreSQL data in `${VPS_APP_DIR}/pgdata`.
+
+Server prerequisites:
+- Ubuntu 22.04+ with Docker Engine and Docker Compose plugin installed
+- Firewall allows inbound 80/443 (if proxied by nginx) and 1337 (optional direct access)
 
 ---
 

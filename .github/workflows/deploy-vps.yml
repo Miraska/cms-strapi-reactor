@@ -1,0 +1,131 @@
+name: Build and Deploy CMS to VPS (Docker)
+
+on:
+  push:
+    branches: ['dev', 'main']
+    paths:
+      - 'cms-strapi-reactor/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE_NAME: reactor-cms
+  REGISTRY: ghcr.io
+  IMAGE_LATEST: ghcr.io/${{ github.repository_owner }}/reactor-cms:latest
+  IMAGE_SHA: ghcr.io/${{ github.repository_owner }}/reactor-cms:${{ github.sha }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./cms-strapi-reactor
+          file: ./cms-strapi-reactor/Dockerfile
+          push: true
+          tags: |
+            ${{ env.IMAGE_LATEST }}
+            ${{ env.IMAGE_SHA }}
+          cache-from: type=registry,ref=${{ env.IMAGE_LATEST }}
+          cache-to: type=inline
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'dev' || github.ref_name == 'main'
+    steps:
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Add VPS to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy on VPS via SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_APP_DIR: ${{ secrets.VPS_APP_DIR }}
+          VPS_ENV: ${{ secrets.VPS_ENV }}
+          GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          IMAGE_LATEST: ${{ env.IMAGE_LATEST }}
+        run: |
+          REMOTE="${VPS_USER}@${VPS_HOST}"
+          ssh "$REMOTE" "mkdir -p ${VPS_APP_DIR}"
+
+          # Upload .env contents from secret
+          echo \"${VPS_ENV}\" > .env.tmp
+          scp .env.tmp "$REMOTE:${VPS_APP_DIR}/.env"
+          rm -f .env.tmp
+
+          # Write docker-compose.yml remotely (idempotent)
+          ssh "$REMOTE" "cat > ${VPS_APP_DIR}/docker-compose.yml" <<'EOF'
+          services:
+            cms:
+              image: ${IMAGE_LATEST}
+              env_file: .env
+              environment:
+                - NODE_ENV=production
+                - DATABASE_CLIENT=postgres
+                - DATABASE_HOST=postgres
+                - DATABASE_PORT=5432
+              depends_on:
+                postgres:
+                  condition: service_healthy
+              ports:
+                - "1337:1337"
+              volumes:
+                - ./public:/app/public
+              restart: unless-stopped
+
+            postgres:
+              image: postgres:16-alpine
+              environment:
+                - POSTGRES_DB=${DATABASE_NAME}
+                - POSTGRES_USER=${DATABASE_USERNAME}
+                - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+              volumes:
+                - ./pgdata:/var/lib/postgresql/data
+              healthcheck:
+                test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+                interval: 10s
+                timeout: 5s
+                retries: 10
+              restart: unless-stopped
+
+          volumes:
+            pgdata:
+            public:
+          EOF
+
+          # Ensure docker and compose are available
+          ssh "$REMOTE" "docker --version && docker compose version"
+
+          # Login to GHCR if credentials provided (private images by default)
+          if [ -n \"$GHCR_USERNAME\" ] && [ -n \"$GHCR_TOKEN\" ]; then
+            ssh "$REMOTE" "echo \"$GHCR_TOKEN\" | docker login ghcr.io -u \"$GHCR_USERNAME\" --password-stdin"
+          fi
+
+          # Pull and restart services
+          ssh "$REMOTE" "cd ${VPS_APP_DIR} && docker compose pull && docker compose up -d --remove-orphans && docker image prune -f"

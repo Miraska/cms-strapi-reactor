@@ -1,0 +1,15 @@
+node_modules
+npm-debug.log
+.npmrc
+.git
+.gitignore
+.cache
+.tmp
+dist
+Dockerfile.*
+README.md
+coverage
+**/*.local.*
+.DS_Store
+
+

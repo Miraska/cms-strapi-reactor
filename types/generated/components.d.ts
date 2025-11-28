@@ -1165,7 +1165,7 @@ export interface SectionsWhyTrustUsInfo extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    secondaryImage: Schema.Attribute.Media<'images'> &
+    secondaryTiles: Schema.Attribute.Component<'shared.trust-tile', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
@@ -1177,6 +1177,13 @@ export interface SectionsWhyTrustUsInfo extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    showCards: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<true>;
     tiles: Schema.Attribute.Component<'shared.trust-tile', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {

@@ -35,6 +35,16 @@
         }
       }
     },
+    "showCards": {
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
     "secondaryTitle": {
       "type": "string",
       "required": false,
@@ -44,11 +54,10 @@
         }
       }
     },
-    "secondaryImage": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"],
+    "secondaryTiles": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.trust-tile",
       "pluginOptions": {
         "i18n": {
           "localized": false
