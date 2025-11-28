@@ -662,6 +662,7 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
         'sections.team-carousel',
         'sections.crowdinvesting',
         'sections.why-trust-us',
+        'sections.why-trust-us-info',
         'sections.cta',
       ]
     > &

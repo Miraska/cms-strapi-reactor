@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_trust_cards",
+  "info": {
+    "displayName": "Trust Card",
+    "description": "Card with icon and text for Why Trust Us Info",
+    "icon": "check"
+  },
+  "attributes": {
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "text": {
+      "type": "text",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+

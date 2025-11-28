@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_avatar_items",
+  "info": {
+    "displayName": "Avatar Item",
+    "description": "Avatar with name for crowdinvesting section",
+    "icon": "user"
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    }
+  }
+}
+

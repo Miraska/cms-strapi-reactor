@@ -1,12 +1,12 @@
 {
-  "collectionName": "components_sections_invest_previews",
+  "collectionName": "components_sections_why_trust_us_infos",
   "info": {
-    "displayName": "Invest Preview Section",
-    "description": "Investment preview section with cards for home page",
-    "icon": "chartBubble"
+    "displayName": "Why Trust Us Info",
+    "description": "Content section for Why Trust Us switcher (both primary and secondary pages)",
+    "icon": "shield"
   },
   "attributes": {
-    "title": {
+    "primaryTitle": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -15,37 +15,36 @@
         }
       }
     },
-    "subtitle": {
-      "type": "text",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "items": {
+    "tiles": {
       "type": "component",
       "repeatable": true,
-      "component": "shared.feature-item",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "image1": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"],
+      "component": "shared.trust-tile",
       "pluginOptions": {
         "i18n": {
           "localized": false
         }
       }
     },
-    "image2": {
+    "cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.trust-card",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "secondaryTitle": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "secondaryImage": {
       "type": "media",
       "multiple": false,
       "required": false,

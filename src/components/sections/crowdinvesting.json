@@ -43,6 +43,46 @@
         }
       }
     },
+    "avatars": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.avatar-item",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "cardImages": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.card-images",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "icons": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.icons-group",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "backgrounds": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.background-images",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
     "minimumEntryLabel": {
       "type": "string",
       "required": false,

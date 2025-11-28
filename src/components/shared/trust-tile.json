@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_shared_trust_tiles",
+  "info": {
+    "displayName": "Trust Tile",
+    "description": "Image tile for Why Trust Us Info gallery",
+    "icon": "picture"
+  },
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "alt": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "size": {
+      "type": "enumeration",
+      "enum": ["large", "small"],
+      "default": "small"
+    }
+  }
+}
+

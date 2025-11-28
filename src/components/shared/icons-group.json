@@ -1,40 +1,12 @@
 {
-  "collectionName": "components_sections_invest_previews",
+  "collectionName": "components_shared_icons_groups",
   "info": {
-    "displayName": "Invest Preview Section",
-    "description": "Investment preview section with cards for home page",
-    "icon": "chartBubble"
+    "displayName": "Icons Group",
+    "description": "Group of icons for crowdinvesting section",
+    "icon": "apps"
   },
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "subtitle": {
-      "type": "text",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "items": {
-      "type": "component",
-      "repeatable": true,
-      "component": "shared.feature-item",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "image1": {
+    "iconCentral": {
       "type": "media",
       "multiple": false,
       "required": false,
@@ -45,7 +17,40 @@
         }
       }
     },
-    "image2": {
+    "iconGuard": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "iconFile": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "iconGear": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "iconBuild": {
       "type": "media",
       "multiple": false,
       "required": false,

@@ -466,6 +466,24 @@ export interface SectionsCrowdinvesting extends Struct.ComponentSchema {
     icon: 'handHeart';
   };
   attributes: {
+    avatars: Schema.Attribute.Component<'shared.avatar-item', true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    backgrounds: Schema.Attribute.Component<'shared.background-images', false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    cardImages: Schema.Attribute.Component<'shared.card-images', false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     cardTopText: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -482,6 +500,12 @@ export interface SectionsCrowdinvesting extends Struct.ComponentSchema {
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
+        };
+      }>;
+    icons: Schema.Attribute.Component<'shared.icons-group', false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
         };
       }>;
     minimumEntryAmount: Schema.Attribute.String &
@@ -606,6 +630,18 @@ export interface SectionsInvestPreview extends Struct.ComponentSchema {
     icon: 'chartBubble';
   };
   attributes: {
+    image1: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    image2: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     items: Schema.Attribute.Component<'shared.feature-item', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1109,6 +1145,88 @@ export interface SectionsWhyTrustUs extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsWhyTrustUsInfo extends Struct.ComponentSchema {
+  collectionName: 'components_sections_why_trust_us_infos';
+  info: {
+    description: 'Content section for Why Trust Us switcher (both primary and secondary pages)';
+    displayName: 'Why Trust Us Info';
+    icon: 'shield';
+  };
+  attributes: {
+    cards: Schema.Attribute.Component<'shared.trust-card', true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    primaryTitle: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    secondaryImage: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    secondaryTitle: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    tiles: Schema.Attribute.Component<'shared.trust-tile', true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+  };
+}
+
+export interface SharedAvatarItem extends Struct.ComponentSchema {
+  collectionName: 'components_shared_avatar_items';
+  info: {
+    description: 'Avatar with name for crowdinvesting section';
+    displayName: 'Avatar Item';
+    icon: 'user';
+  };
+  attributes: {
+    image: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+  };
+}
+
+export interface SharedBackgroundImages extends Struct.ComponentSchema {
+  collectionName: 'components_shared_background_images';
+  info: {
+    description: 'Background and overlay images';
+    displayName: 'Background Images';
+    icon: 'landscape';
+  };
+  attributes: {
+    tradeUpImage: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+  };
+}
+
 export interface SharedButton extends Struct.ComponentSchema {
   collectionName: 'components_shared_buttons';
   info: {
@@ -1125,6 +1243,35 @@ export interface SharedButton extends Struct.ComponentSchema {
         };
       }>;
     url: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedCardImages extends Struct.ComponentSchema {
+  collectionName: 'components_shared_card_images';
+  info: {
+    description: 'Images for card backgrounds and masks';
+    displayName: 'Card Images';
+    icon: 'picture';
+  };
+  attributes: {
+    cardImage: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    maskImage1: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    maskImage2: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
   };
 }
 
@@ -1172,6 +1319,47 @@ export interface SharedFeatureItem extends Struct.ComponentSchema {
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
+        };
+      }>;
+  };
+}
+
+export interface SharedIconsGroup extends Struct.ComponentSchema {
+  collectionName: 'components_shared_icons_groups';
+  info: {
+    description: 'Group of icons for crowdinvesting section';
+    displayName: 'Icons Group';
+    icon: 'apps';
+  };
+  attributes: {
+    iconBuild: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    iconCentral: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    iconFile: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    iconGear: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    iconGuard: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
         };
       }>;
   };
@@ -1278,6 +1466,54 @@ export interface SharedTextItem extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+  };
+}
+
+export interface SharedTrustCard extends Struct.ComponentSchema {
+  collectionName: 'components_shared_trust_cards';
+  info: {
+    description: 'Card with icon and text for Why Trust Us Info';
+    displayName: 'Trust Card';
+    icon: 'check';
+  };
+  attributes: {
+    icon: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    text: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+  };
+}
+
+export interface SharedTrustTile extends Struct.ComponentSchema {
+  collectionName: 'components_shared_trust_tiles';
+  info: {
+    description: 'Image tile for Why Trust Us Info gallery';
+    displayName: 'Trust Tile';
+    icon: 'picture';
+  };
+  attributes: {
+    alt: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    image: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    size: Schema.Attribute.Enumeration<['large', 'small']> & Schema.Attribute.DefaultTo<'small'>;
   };
 }
 
@@ -1409,13 +1645,20 @@ declare module '@strapi/strapi' {
       'sections.technology-preview': SectionsTechnologyPreview;
       'sections.text-with-image': SectionsTextWithImage;
       'sections.why-trust-us': SectionsWhyTrustUs;
+      'sections.why-trust-us-info': SectionsWhyTrustUsInfo;
+      'shared.avatar-item': SharedAvatarItem;
+      'shared.background-images': SharedBackgroundImages;
       'shared.button': SharedButton;
+      'shared.card-images': SharedCardImages;
       'shared.card-item': SharedCardItem;
       'shared.feature-item': SharedFeatureItem;
+      'shared.icons-group': SharedIconsGroup;
       'shared.media-item': SharedMediaItem;
       'shared.seo': SharedSeo;
       'shared.stat-item': SharedStatItem;
       'shared.text-item': SharedTextItem;
+      'shared.trust-card': SharedTrustCard;
+      'shared.trust-tile': SharedTrustTile;
       'technology.controlled-rollout-section': TechnologyControlledRolloutSection;
       'technology.resonant-section': TechnologyResonantSection;
       'technology.scientific-section': TechnologyScientificSection;
