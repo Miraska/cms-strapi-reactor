@@ -193,7 +193,7 @@ jobs:
           ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cat > ${VPS_APP_DIR}/docker-compose.yml" <<'EOF'
           services:
             cms:
-              image: ${IMAGE_LATEST}
+              image: __IMAGE_LATEST__
               env_file: .env
               environment:
                 - NODE_ENV=production
@@ -229,6 +229,8 @@ jobs:
             pgdata:
             public:
           EOF
+          # Replace placeholder with actual image tag to make compose file self-contained
+          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && IMAGE_VAL='${IMAGE_LATEST}' && sed -i \"s|__IMAGE_LATEST__|${IMAGE_VAL//\//\\/}|g\" docker-compose.yml"
 
           # Ensure docker and compose are available
           ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "docker --version && docker compose version"
