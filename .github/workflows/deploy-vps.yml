@@ -183,10 +183,11 @@ jobs:
           PORT="${VPS_SSH_PORT:-22}"
           ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "mkdir -p ${VPS_APP_DIR}"
 
-          # Upload .env contents from secret
-          echo \"${VPS_ENV}\" > .env.tmp
-          scp -P "$PORT" .env.tmp "$REMOTE:${VPS_APP_DIR}/.env"
-          rm -f .env.tmp
+          # Upload .env via base64 to preserve newlines/quotes; convert CRLF to LF on server
+          printf '%s' "${VPS_ENV}" | base64 -w0 > env.b64
+          scp -P "$PORT" env.b64 "$REMOTE:${VPS_APP_DIR}/env.b64"
+          rm -f env.b64
+          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && base64 -d env.b64 > .env && rm -f env.b64 && tr -d '\r' < .env > .env.unix && mv .env.unix .env"
 
           # Write docker-compose.yml remotely (idempotent)
           ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cat > ${VPS_APP_DIR}/docker-compose.yml" <<'EOF'
