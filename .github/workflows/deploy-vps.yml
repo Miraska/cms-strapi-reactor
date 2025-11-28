@@ -4,8 +4,7 @@ on:
   push:
     branches: ['dev', 'main']
     paths:
-      - 'cms-strapi-reactor/**'
-      - './**'
+      - '**'
   workflow_dispatch:
 
 permissions:
@@ -47,8 +46,8 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: ./cms-strapi-reactor
-          file: ./cms-strapi-reactor/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: true
           tags: |
             ${{ steps.meta.outputs.image_latest }}
