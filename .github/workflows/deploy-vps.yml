@@ -5,6 +5,7 @@ on:
     branches: ['dev', 'main']
     paths:
       - 'cms-strapi-reactor/**'
+      - './**'
   workflow_dispatch:
 
 permissions:
@@ -14,8 +15,9 @@ permissions:
 env:
   IMAGE_NAME: reactor-cms
   REGISTRY: ghcr.io
-  IMAGE_LATEST: ghcr.io/${{ github.repository_owner }}/reactor-cms:latest
-  IMAGE_SHA: ghcr.io/${{ github.repository_owner }}/reactor-cms:${{ github.sha }}
+  OWNER_SLUG: ${{ toLower(github.repository_owner) }}
+  IMAGE_LATEST: ghcr.io/${{ env.OWNER_SLUG }}/reactor-cms:latest
+  IMAGE_SHA: ghcr.io/${{ env.OWNER_SLUG }}/reactor-cms:${{ github.sha }}
 
 jobs:
   build-and-push:
