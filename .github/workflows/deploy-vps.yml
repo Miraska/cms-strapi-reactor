@@ -189,6 +189,7 @@ jobs:
           services:
             cms:
               image: "${IMAGE_LATEST}"
+              container_name: strapi-cms
               env_file: .env
               environment:
                 - NODE_ENV=production
@@ -201,11 +202,14 @@ jobs:
               ports:
                 - "1337:1337"
               volumes:
-                - ./public:/app/public
+                - ./public/uploads:/app/public/uploads
               restart: unless-stopped
+              networks:
+                - cms-network
 
             postgres:
-              image: public.ecr.aws/docker/library/postgres:16-alpine
+              image: postgres:16-alpine
+              container_name: strapi-db
               env_file: .env
               environment:
                 - POSTGRES_DB=\${DATABASE_NAME}
@@ -214,11 +218,17 @@ jobs:
               volumes:
                 - ./pgdata:/var/lib/postgresql/data
               healthcheck:
-                test: "pg_isready -U \$\$POSTGRES_USER"
+                test: ["CMD-SHELL", "pg_isready -U \$\$POSTGRES_USER -d \$\$POSTGRES_DB"]
                 interval: 10s
                 timeout: 5s
                 retries: 10
               restart: unless-stopped
+              networks:
+                - cms-network
+
+          networks:
+            cms-network:
+              driver: bridge
           EOFCOMPOSE
           sed -i 's/^          //' docker-compose.yml
           scp -P "$PORT" docker-compose.yml "$REMOTE:${VPS_APP_DIR}/docker-compose.yml"
@@ -233,6 +243,9 @@ jobs:
           else
             echo "Skipping GHCR login: GHCR_USERNAME or GHCR_TOKEN not set"
           fi
+
+          echo "=== Creating required directories ==="
+          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && mkdir -p public/uploads && chmod 755 public/uploads"
 
           echo "=== Pulling and starting containers ==="
           ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && docker compose pull && docker compose up -d --remove-orphans && docker image prune -f"
