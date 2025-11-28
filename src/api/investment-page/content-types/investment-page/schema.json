@@ -50,9 +50,7 @@
         "sections.cta",
         "sections.text-with-image",
         "sections.accordion",
-        "sections.rich-content",
-        "investment.hero-section",
-        "investment.why-trust-us-section"
+        "sections.rich-content"
       ],
       "pluginOptions": {
         "i18n": {

@@ -48,7 +48,6 @@
         "sections.rich-content",
         "sections.accordion",
         "sections.about-preview",
-        "partners.hero-section",
         "partners.more-than-company-section"
       ],
       "pluginOptions": {

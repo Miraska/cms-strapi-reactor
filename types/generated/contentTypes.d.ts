@@ -724,8 +724,6 @@ export interface ApiInvestmentPageInvestmentPage extends Struct.SingleTypeSchema
         'sections.text-with-image',
         'sections.accordion',
         'sections.rich-content',
-        'investment.hero-section',
-        'investment.why-trust-us-section',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -830,7 +828,6 @@ export interface ApiPartnersPagePartnersPage extends Struct.SingleTypeSchema {
         'sections.rich-content',
         'sections.accordion',
         'sections.about-preview',
-        'partners.hero-section',
         'partners.more-than-company-section',
       ]
     > &
