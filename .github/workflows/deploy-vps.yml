@@ -185,7 +185,7 @@ jobs:
           ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && base64 -d env.b64 > .env && rm -f env.b64 && sed -i 's/\r$//' .env"
 
           echo "=== Creating docker-compose.yml ==="
-          cat > docker-compose.yml <<EOFCOMPOSE
+          cat > docker-compose.yml <<'EOFCOMPOSE'
 services:
   cms:
     image: "${IMAGE_LATEST}"
@@ -214,7 +214,7 @@ services:
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U \$\$POSTGRES_USER"]
+      test: "pg_isready -U $$POSTGRES_USER"
       interval: 10s
       timeout: 5s
       retries: 10
