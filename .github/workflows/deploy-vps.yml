@@ -185,41 +185,42 @@ jobs:
           ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && base64 -d env.b64 > .env && rm -f env.b64 && sed -i 's/\r$//' .env"
 
           echo "=== Creating docker-compose.yml ==="
-          cat > docker-compose.yml <<'EOFCOMPOSE'
-services:
-  cms:
-    image: "${IMAGE_LATEST}"
-    env_file: .env
-    environment:
-      - NODE_ENV=production
-      - DATABASE_CLIENT=postgres
-      - DATABASE_HOST=postgres
-      - DATABASE_PORT=5432
-    depends_on:
-      postgres:
-        condition: service_healthy
-    ports:
-      - "1337:1337"
-    volumes:
-      - ./public:/app/public
-    restart: unless-stopped
+          cat > docker-compose.yml << 'EOFCOMPOSE'
+          services:
+            cms:
+              image: "${IMAGE_LATEST}"
+              env_file: .env
+              environment:
+                - NODE_ENV=production
+                - DATABASE_CLIENT=postgres
+                - DATABASE_HOST=postgres
+                - DATABASE_PORT=5432
+              depends_on:
+                postgres:
+                  condition: service_healthy
+              ports:
+                - "1337:1337"
+              volumes:
+                - ./public:/app/public
+              restart: unless-stopped
 
-  postgres:
-    image: public.ecr.aws/docker/library/postgres:16-alpine
-    env_file: .env
-    environment:
-      - POSTGRES_DB=\${DATABASE_NAME}
-      - POSTGRES_USER=\${DATABASE_USERNAME}
-      - POSTGRES_PASSWORD=\${DATABASE_PASSWORD}
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: "pg_isready -U $$POSTGRES_USER"
-      interval: 10s
-      timeout: 5s
-      retries: 10
-    restart: unless-stopped
-EOFCOMPOSE
+            postgres:
+              image: public.ecr.aws/docker/library/postgres:16-alpine
+              env_file: .env
+              environment:
+                - POSTGRES_DB=\${DATABASE_NAME}
+                - POSTGRES_USER=\${DATABASE_USERNAME}
+                - POSTGRES_PASSWORD=\${DATABASE_PASSWORD}
+              volumes:
+                - ./pgdata:/var/lib/postgresql/data
+              healthcheck:
+                test: "pg_isready -U $$POSTGRES_USER"
+                interval: 10s
+                timeout: 5s
+                retries: 10
+              restart: unless-stopped
+          EOFCOMPOSE
+          sed -i 's/^          //' docker-compose.yml
           scp -P "$PORT" docker-compose.yml "$REMOTE:${VPS_APP_DIR}/docker-compose.yml"
           rm -f docker-compose.yml
 
