@@ -74,6 +74,8 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     needs: ci
+    outputs:
+      image_latest: ${{ steps.meta.outputs.image_latest }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -91,9 +93,10 @@ jobs:
       - name: Prepare image tags (lowercase owner)
         id: meta
         run: |
-          echo "owner=${OWNER,,}" >> $GITHUB_OUTPUT
-          echo "image_latest=ghcr.io/${OWNER,,}/${IMAGE_NAME}:latest" >> $GITHUB_OUTPUT
-          echo "image_sha=ghcr.io/${OWNER,,}/${IMAGE_NAME}:${GITHUB_SHA}" >> $GITHUB_OUTPUT
+          OWNER_LC="${OWNER,,}"
+          echo "owner=${OWNER_LC}" >> $GITHUB_OUTPUT
+          echo "image_latest=ghcr.io/${OWNER_LC}/${IMAGE_NAME}:latest" >> $GITHUB_OUTPUT
+          echo "image_sha=ghcr.io/${OWNER_LC}/${IMAGE_NAME}:${GITHUB_SHA}" >> $GITHUB_OUTPUT
         env:
           OWNER: ${{ github.repository_owner }}
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
@@ -117,27 +120,24 @@ jobs:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -e
-          echo "Attempting to set GHCR package visibility to public for ${IMAGE_NAME}"
-          # Try for user-owned package
-          curl -sS -o /dev/null -w "%{http_code}\n" -X PUT \
+          echo "Attempting to set GHCR package visibility to public"
+          STATUS=$(curl -sS -o /dev/null -w "%{http_code}" -X PUT \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/user/packages/container/${IMAGE_NAME}/visibility" \
-            -d '{"visibility":"public"}' | tee visibility_status.txt
-
-          STATUS=$(cat visibility_status.txt)
+            -d '{"visibility":"public"}')
+          echo "User endpoint returned: $STATUS"
           if [ "$STATUS" != "200" ] && [ "$STATUS" != "204" ]; then
-            echo "User endpoint returned $STATUS, trying org endpoint..."
-            curl -sS -o /dev/null -w "%{http_code}\n" -X PUT \
+            echo "Trying org endpoint..."
+            curl -sS -o /dev/null -w "%{http_code}" -X PUT \
               -H "Authorization: Bearer $GITHUB_TOKEN" \
               -H "Accept: application/vnd.github+json" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
               "https://api.github.com/orgs/${OWNER}/packages/container/${IMAGE_NAME}/visibility" \
-              -d '{"visibility":"public"}' | tee visibility_status_org.txt
+              -d '{"visibility":"public"}'
           fi
-          echo "Visibility step finished (best-effort). If image still private, set to public in GHCR UI."
+          echo "Visibility step finished (best-effort)."
 
   deploy:
     needs: [build-and-push, ssh-check]
@@ -160,14 +160,6 @@ jobs:
             ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
           fi
 
-      - name: Prepare image tag (lowercase owner)
-        id: meta
-        run: |
-          echo "image_latest=ghcr.io/${OWNER,,}/${IMAGE_NAME}:latest" >> $GITHUB_OUTPUT
-        env:
-          OWNER: ${{ github.repository_owner }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-
       - name: Deploy on VPS via SSH
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
@@ -177,77 +169,71 @@ jobs:
           VPS_ENV: ${{ secrets.VPS_ENV }}
           GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-          IMAGE_LATEST: ${{ steps.meta.outputs.image_latest }}
+          IMAGE_LATEST: ${{ needs.build-and-push.outputs.image_latest }}
         run: |
+          set -e
           REMOTE="${VPS_USER}@${VPS_HOST}"
           PORT="${VPS_SSH_PORT:-22}"
+
+          echo "=== Creating app directory ==="
           ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "mkdir -p ${VPS_APP_DIR}"
 
-          # Upload .env via base64 to preserve newlines/quotes; convert CRLF to LF on server
+          echo "=== Uploading .env ==="
           printf '%s' "${VPS_ENV}" | base64 -w0 > env.b64
           scp -P "$PORT" env.b64 "$REMOTE:${VPS_APP_DIR}/env.b64"
           rm -f env.b64
-          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && base64 -d env.b64 > .env && rm -f env.b64 && tr -d '\r' < .env > .env.unix && mv .env.unix .env"
+          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && base64 -d env.b64 > .env && rm -f env.b64 && sed -i 's/\r$//' .env"
 
-          # Write docker-compose.yml remotely (idempotent)
-          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cat > ${VPS_APP_DIR}/docker-compose.yml" <<'EOF'
-          services:
-            cms:
-              image: __IMAGE_LATEST__
-              env_file: .env
-              environment:
-                - NODE_ENV=production
-                - DATABASE_CLIENT=postgres
-                - DATABASE_HOST=postgres
-                - DATABASE_PORT=5432
-              depends_on:
-                postgres:
-                  condition: service_healthy
-              ports:
-                - "1337:1337"
-              volumes:
-                - ./public:/app/public
-              restart: unless-stopped
+          echo "=== Creating docker-compose.yml ==="
+          cat > docker-compose.yml <<EOFCOMPOSE
+services:
+  cms:
+    image: "${IMAGE_LATEST}"
+    env_file: .env
+    environment:
+      - NODE_ENV=production
+      - DATABASE_CLIENT=postgres
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./public:/app/public
+    restart: unless-stopped
 
-            postgres:
-              # Use Amazon ECR Public mirror to avoid Docker Hub pull rate limits
-              image: public.ecr.aws/docker/library/postgres:16-alpine
-              environment:
-                - POSTGRES_DB=${DATABASE_NAME}
-                - POSTGRES_USER=${DATABASE_USERNAME}
-                - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-              volumes:
-                - ./pgdata:/var/lib/postgresql/data
-              healthcheck:
-                test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
-                interval: 10s
-                timeout: 5s
-                retries: 10
-              restart: unless-stopped
+  postgres:
+    image: public.ecr.aws/docker/library/postgres:16-alpine
+    env_file: .env
+    environment:
+      - POSTGRES_DB=\${DATABASE_NAME}
+      - POSTGRES_USER=\${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=\${DATABASE_PASSWORD}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \$\$POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+EOFCOMPOSE
+          scp -P "$PORT" docker-compose.yml "$REMOTE:${VPS_APP_DIR}/docker-compose.yml"
+          rm -f docker-compose.yml
 
-          volumes:
-            pgdata:
-            public:
-          EOF
-          # Replace placeholder with actual image tag to make compose file self-contained
-          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && IMAGE_VAL='${IMAGE_LATEST}' && sed -i \"s|__IMAGE_LATEST__|${IMAGE_VAL//\//\\/}|g\" docker-compose.yml"
-
-          # Ensure docker and compose are available
+          echo "=== Checking Docker ==="
           ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "docker --version && docker compose version"
 
-          # Login to GHCR if credentials provided (private images by default)
+          echo "=== GHCR login (if credentials provided) ==="
           if [ -n "${GHCR_USERNAME:-}" ] && [ -n "${GHCR_TOKEN:-}" ]; then
-            ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "echo \"$GHCR_TOKEN\" | docker login ghcr.io -u \"$GHCR_USERNAME\" --password-stdin"
+            ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "echo '${GHCR_TOKEN}' | docker login ghcr.io -u '${GHCR_USERNAME}' --password-stdin"
           else
             echo "Skipping GHCR login: GHCR_USERNAME or GHCR_TOKEN not set"
           fi
 
-          # Optional: Login to Docker Hub to avoid rate limits for any Hub images (not required with ECR mirror)
-          if [ -n "${DOCKERHUB_USERNAME:-}" ] && [ -n "${DOCKERHUB_TOKEN:-}" ]; then
-            ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "echo \"$DOCKERHUB_TOKEN\" | docker login -u \"$DOCKERHUB_USERNAME\" --password-stdin"
-          else
-            echo "Skipping Docker Hub login: DOCKERHUB_USERNAME or DOCKERHUB_TOKEN not set"
-          fi
+          echo "=== Pulling and starting containers ==="
+          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && docker compose pull && docker compose up -d --remove-orphans && docker image prune -f"
 
-          # Pull and restart services
-          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && IMAGE_LATEST='${IMAGE_LATEST}' docker compose pull && IMAGE_LATEST='${IMAGE_LATEST}' docker compose up -d --remove-orphans && docker image prune -f"
+          echo "=== Deploy complete ==="
