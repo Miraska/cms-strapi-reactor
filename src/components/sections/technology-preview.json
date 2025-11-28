@@ -1,9 +1,9 @@
 {
-  "collectionName": "components_global_footers",
+  "collectionName": "components_sections_technology_previews",
   "info": {
-    "displayName": "Footer",
-    "description": "Footer content and social links",
-    "icon": "apps"
+    "displayName": "Technology Preview Section",
+    "description": "Technology overview section with process description",
+    "icon": "cog"
   },
   "attributes": {
     "title": {
@@ -15,8 +15,8 @@
         }
       }
     },
-    "copyright": {
-      "type": "string",
+    "processText": {
+      "type": "text",
       "required": false,
       "pluginOptions": {
         "i18n": {
@@ -24,8 +24,8 @@
         }
       }
     },
-    "mapLabel": {
-      "type": "string",
+    "synthesisText": {
+      "type": "text",
       "required": false,
       "pluginOptions": {
         "i18n": {
@@ -33,8 +33,8 @@
         }
       }
     },
-    "socialLabel": {
-      "type": "string",
+    "altersText": {
+      "type": "text",
       "required": false,
       "pluginOptions": {
         "i18n": {
@@ -42,15 +42,22 @@
         }
       }
     },
-    "socialLinks": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "cta": {
       "type": "component",
-      "repeatable": true,
-      "component": "global.social-link",
+      "repeatable": false,
+      "component": "shared.button",
       "pluginOptions": {
         "i18n": {
-          "localized": false
+          "localized": true
         }
       }
     }
   }
 }
+

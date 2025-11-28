@@ -1,12 +1,21 @@
 {
-  "collectionName": "components_global_footers",
+  "collectionName": "components_sections_about_previews",
   "info": {
-    "displayName": "Footer",
-    "description": "Footer content and social links",
-    "icon": "apps"
+    "displayName": "About Preview Section",
+    "description": "Company about section with text and quote",
+    "icon": "information"
   },
   "attributes": {
-    "title": {
+    "text": {
+      "type": "richtext",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "fromLabel": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -15,7 +24,7 @@
         }
       }
     },
-    "copyright": {
+    "toLabel": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -24,8 +33,8 @@
         }
       }
     },
-    "mapLabel": {
-      "type": "string",
+    "quote": {
+      "type": "text",
       "required": false,
       "pluginOptions": {
         "i18n": {
@@ -33,24 +42,12 @@
         }
       }
     },
-    "socialLabel": {
-      "type": "string",
+    "image": {
+      "type": "media",
+      "multiple": false,
       "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "socialLinks": {
-      "type": "component",
-      "repeatable": true,
-      "component": "global.social-link",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
+      "allowedTypes": ["images"]
     }
   }
 }
+

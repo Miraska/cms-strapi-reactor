@@ -1,0 +1,59 @@
+{
+  "collectionName": "components_sections_heroes",
+  "info": {
+    "displayName": "Hero Section",
+    "description": "Hero section with title, subtitle, CTA and background",
+    "icon": "landscape"
+  },
+  "attributes": {
+    "title": {
+      "type": "text",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "backgroundGradient": {
+      "type": "string",
+      "required": false,
+      "default": ""
+    },
+    "alignment": {
+      "type": "enumeration",
+      "enum": ["left", "center", "right"],
+      "default": "center"
+    },
+    "showParticles": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
+

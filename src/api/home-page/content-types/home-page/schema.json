@@ -5,11 +5,10 @@
     "singularName": "home-page",
     "pluralName": "home-pages",
     "displayName": "🏠 Home Page",
-    "description": "Home page content with configurable sections",
-    "mainField": "title"
+    "description": "Home page with Dynamic Zone sections"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {
     "i18n": {
@@ -20,9 +19,10 @@
     "title": {
       "type": "string",
       "default": "Home Page",
+      "required": false,
       "pluginOptions": {
         "i18n": {
-          "localized": false
+          "localized": true
         }
       }
     },
@@ -39,107 +39,19 @@
     "sections": {
       "type": "dynamiczone",
       "components": [
-        "home.hero-section",
-        "home.about-section",
-        "home.market-section",
-        "home.invest-section",
-        "home.tariffs-section",
-        "home.team-section",
-        "home.crowdinvesting-section",
-        "home.why-trust-us-section",
-        "home.technology-section",
-        "global.generation-opportunity"
+        "sections.hero",
+        "sections.about-preview",
+        "sections.market",
+        "sections.features",
+        "sections.stats",
+        "sections.tariffs",
+        "sections.team-carousel",
+        "sections.crowdinvesting",
+        "sections.why-trust-us",
+        "sections.technology-preview",
+        "sections.cta",
+        "sections.rich-content"
       ],
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "hero": {
-      "type": "component",
-      "repeatable": false,
-      "component": "home.hero-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "about": {
-      "type": "component",
-      "repeatable": false,
-      "component": "home.about-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "market": {
-      "type": "component",
-      "repeatable": false,
-      "component": "home.market-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "invest": {
-      "type": "component",
-      "repeatable": false,
-      "component": "home.invest-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "tariffs": {
-      "type": "component",
-      "repeatable": false,
-      "component": "home.tariffs-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "team": {
-      "type": "component",
-      "repeatable": false,
-      "component": "home.team-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "crowdinvesting": {
-      "type": "component",
-      "repeatable": false,
-      "component": "home.crowdinvesting-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "whyTrustUs": {
-      "type": "component",
-      "repeatable": false,
-      "component": "home.why-trust-us-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "technology": {
-      "type": "component",
-      "repeatable": false,
-      "component": "home.technology-section",
       "pluginOptions": {
         "i18n": {
           "localized": true

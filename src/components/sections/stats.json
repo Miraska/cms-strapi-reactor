@@ -1,0 +1,51 @@
+{
+  "collectionName": "components_sections_stats",
+  "info": {
+    "displayName": "Stats Section",
+    "description": "Section displaying statistics and metrics",
+    "icon": "chartBubble"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.stat-item",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["default", "cards", "inline"],
+      "default": "default"
+    }
+  }
+}
+

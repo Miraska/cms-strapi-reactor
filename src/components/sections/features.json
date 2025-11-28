@@ -1,0 +1,50 @@
+{
+  "collectionName": "components_sections_features",
+  "info": {
+    "displayName": "Features Section",
+    "description": "Section with feature cards grid",
+    "icon": "apps"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.feature-item",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "columns": {
+      "type": "enumeration",
+      "enum": ["2", "3", "4"],
+      "default": "3"
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["cards", "list", "icons"],
+      "default": "cards"
+    }
+  }
+}
+

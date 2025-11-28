@@ -5,11 +5,10 @@
     "singularName": "partners-page",
     "pluralName": "partners-pages",
     "displayName": "🤝 Partners Page",
-    "description": "Partners page content with all sections",
-    "mainField": "title"
+    "description": "Partners page with Dynamic Zone sections"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {
     "i18n": {
@@ -19,10 +18,11 @@
   "attributes": {
     "title": {
       "type": "string",
-      "default": "Partners Page",
+      "default": "Partners",
+      "required": false,
       "pluginOptions": {
         "i18n": {
-          "localized": false
+          "localized": true
         }
       }
     },
@@ -36,30 +36,17 @@
         }
       }
     },
-    "hero": {
-      "type": "component",
-      "repeatable": false,
-      "component": "partners.hero-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "moreThanCompany": {
-      "type": "component",
-      "repeatable": false,
-      "component": "partners.more-than-company-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "list": {
-      "type": "component",
-      "repeatable": false,
-      "component": "partners.list-section",
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.hero",
+        "sections.text-with-image",
+        "sections.partners-grid",
+        "sections.features",
+        "sections.stats",
+        "sections.cta",
+        "sections.rich-content"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -68,4 +55,3 @@
     }
   }
 }
-

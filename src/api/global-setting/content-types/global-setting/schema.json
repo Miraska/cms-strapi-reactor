@@ -5,8 +5,7 @@
     "singularName": "global-setting",
     "pluralName": "global-settings",
     "displayName": "⚙️ Global Settings",
-    "description": "Global site settings: branding, navigation, footer, common texts, and contact form configuration",
-    "mainField": "siteName"
+    "description": "Global site settings: branding, navigation, footer, and email configuration"
   },
   "options": {
     "draftAndPublish": false
@@ -82,16 +81,6 @@
         }
       }
     },
-    "common": {
-      "type": "component",
-      "repeatable": false,
-      "component": "global.common",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "generationOpportunity": {
       "type": "component",
       "repeatable": false,
@@ -102,33 +91,10 @@
         }
       }
     },
-    "socialLinks": {
-      "type": "component",
-      "repeatable": true,
-      "component": "global.social-link",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "investButtonUrl": {
-      "type": "string",
-      "default": "https://goldenafrica-invest.com"
-    },
-    "investButtonText": {
-      "type": "string",
-      "default": "Invest Now",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "contactFormEmails": {
       "type": "json",
-      "required": true,
-      "default": ["example@gmail.com"],
+      "required": false,
+      "default": [],
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -141,6 +107,62 @@
       "pluginOptions": {
         "i18n": {
           "localized": true
+        }
+      }
+    },
+    "smtpHost": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "smtpPort": {
+      "type": "integer",
+      "required": false,
+      "default": 587,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "smtpUser": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "smtpPassword": {
+      "type": "password",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "smtpFromEmail": {
+      "type": "email",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "smtpFromName": {
+      "type": "string",
+      "required": false,
+      "default": "REACTOR Website",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
         }
       }
     }

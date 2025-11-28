@@ -1,12 +1,12 @@
 {
-  "collectionName": "components_global_commons",
+  "collectionName": "components_sections_tariffs",
   "info": {
-    "displayName": "Common",
-    "description": "Common UI texts used across the site",
-    "icon": "globe"
+    "displayName": "Tariffs Section",
+    "description": "Investment tariffs and pricing section",
+    "icon": "priceTag"
   },
   "attributes": {
-    "investNow": {
+    "title": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -15,7 +15,7 @@
         }
       }
     },
-    "learnMore": {
+    "scenarioTitle": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -24,7 +24,7 @@
         }
       }
     },
-    "language": {
+    "earlyInvestment": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -33,7 +33,7 @@
         }
       }
     },
-    "error": {
+    "equity": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -42,7 +42,16 @@
         }
       }
     },
-    "loading": {
+    "pricingText": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "growthMinimal": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -51,7 +60,16 @@
         }
       }
     },
-    "goHome": {
+    "companyValuation": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "yourWorth": {
       "type": "string",
       "required": false,
       "pluginOptions": {

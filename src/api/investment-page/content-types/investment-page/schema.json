@@ -5,11 +5,10 @@
     "singularName": "investment-page",
     "pluralName": "investment-pages",
     "displayName": "💰 Investment Page",
-    "description": "Investment page content with all sections",
-    "mainField": "title"
+    "description": "Investment page with Dynamic Zone sections"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {
     "i18n": {
@@ -19,10 +18,11 @@
   "attributes": {
     "title": {
       "type": "string",
-      "default": "Investment Page",
+      "default": "Investment",
+      "required": false,
       "pluginOptions": {
         "i18n": {
-          "localized": false
+          "localized": true
         }
       }
     },
@@ -36,60 +36,21 @@
         }
       }
     },
-    "hero": {
-      "type": "component",
-      "repeatable": false,
-      "component": "investment.hero-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "whyTrustUs": {
-      "type": "component",
-      "repeatable": false,
-      "component": "investment.why-trust-us-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "format": {
-      "type": "component",
-      "repeatable": false,
-      "component": "investment.format-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "profit": {
-      "type": "component",
-      "repeatable": false,
-      "component": "investment.profit-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "whyInvest": {
-      "type": "component",
-      "repeatable": false,
-      "component": "investment.why-invest-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "anyone": {
-      "type": "component",
-      "repeatable": false,
-      "component": "investment.anyone-section",
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.hero",
+        "sections.investment-benefits",
+        "sections.investment-format",
+        "sections.investor-types",
+        "sections.stats",
+        "sections.features",
+        "sections.tariffs",
+        "sections.why-trust-us",
+        "sections.cta",
+        "sections.accordion",
+        "sections.rich-content"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -98,4 +59,3 @@
     }
   }
 }
-

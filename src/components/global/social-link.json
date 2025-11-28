@@ -2,7 +2,7 @@
   "collectionName": "components_global_social_links",
   "info": {
     "displayName": "Social Link",
-    "description": "Social media link with platform name and URL",
+    "description": "Social media link with platform name, URL and optional custom icon",
     "icon": "link"
   },
   "attributes": {
@@ -16,7 +16,8 @@
         "youtube",
         "telegram",
         "email",
-        "website"
+        "website",
+        "custom"
       ],
       "required": true
     },
@@ -33,10 +34,15 @@
         }
       }
     },
+    "customIcon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
     "isActive": {
       "type": "boolean",
       "default": true
     }
   }
 }
-

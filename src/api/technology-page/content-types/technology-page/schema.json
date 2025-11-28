@@ -5,11 +5,10 @@
     "singularName": "technology-page",
     "pluralName": "technology-pages",
     "displayName": "⚡ Technology Page",
-    "description": "Technology page content with all sections",
-    "mainField": "title"
+    "description": "Technology page with Dynamic Zone sections"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {
     "i18n": {
@@ -19,72 +18,42 @@
   "attributes": {
     "title": {
       "type": "string",
+      "default": "Technology",
+      "required": false,
       "pluginOptions": {
         "i18n": {
-          "localized": false
+          "localized": true
         }
-      },
-      "default": "Technology Page"
+      }
     },
     "seo": {
       "type": "component",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
+      "repeatable": false,
       "component": "shared.seo",
-      "repeatable": false
-    },
-    "uniqueFeatures": {
-      "type": "component",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      },
-      "component": "technology.unique-features-section",
-      "repeatable": false
+      }
     },
-    "resonant": {
-      "type": "component",
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.hero",
+        "sections.features",
+        "sections.text-with-image",
+        "sections.stats",
+        "sections.image-carousel",
+        "sections.technology-preview",
+        "sections.rich-content",
+        "sections.cta",
+        "sections.accordion"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      },
-      "component": "technology.resonant-section",
-      "repeatable": false
-    },
-    "scientific": {
-      "type": "component",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "technology.scientific-section",
-      "repeatable": false
-    },
-    "controlledRollout": {
-      "type": "component",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "technology.controlled-rollout-section",
-      "repeatable": false
-    },
-    "carousel": {
-      "type": "component",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "technology.carousel-section",
-      "repeatable": false
+      }
     }
   }
 }

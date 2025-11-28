@@ -2,13 +2,9 @@
  * Contact Form Service
  * Handles email sending for contact form submissions
  * 
- * SMTP settings are loaded from environment variables for security:
- * - SMTP_HOST: SMTP server host (e.g., smtp.gmail.com)
- * - SMTP_PORT: SMTP server port (587 for TLS, 465 for SSL)
- * - SMTP_USER: SMTP authentication username
- * - SMTP_PASSWORD: SMTP authentication password (use App Password for Gmail)
- * - SMTP_FROM_EMAIL: Sender email address
- * - SMTP_FROM_NAME: Sender display name
+ * SMTP settings priority:
+ * 1. Global Settings in Strapi (if all required fields are filled)
+ * 2. Environment variables (SMTP_HOST, SMTP_USER, SMTP_PASSWORD, etc.)
  */
 
 import type { Core } from '@strapi/strapi';
@@ -31,10 +27,40 @@ interface SmtpConfig {
   fromName: string;
 }
 
+interface GlobalSettingsSmtp {
+  smtpHost?: string;
+  smtpPort?: number;
+  smtpUser?: string;
+  smtpPassword?: string;
+  smtpFromEmail?: string;
+  smtpFromName?: string;
+  contactFormEmails?: string[];
+  contactFormSubject?: string;
+}
+
 /**
- * Get SMTP configuration from environment variables
+ * Get SMTP configuration from Global Settings or environment variables
  */
-function getSmtpConfig(): SmtpConfig | null {
+async function getSmtpConfig(strapi: Core.Strapi): Promise<SmtpConfig | null> {
+  // First, try to get SMTP settings from Global Settings
+  try {
+    const settings = await strapi.documents('api::global-setting.global-setting').findFirst() as GlobalSettingsSmtp | null;
+    
+    if (settings?.smtpHost && settings?.smtpUser && settings?.smtpPassword) {
+      return {
+        host: settings.smtpHost,
+        port: settings.smtpPort || 587,
+        user: settings.smtpUser,
+        password: settings.smtpPassword,
+        fromEmail: settings.smtpFromEmail || settings.smtpUser,
+        fromName: settings.smtpFromName || 'REACTOR Website',
+      };
+    }
+  } catch (error) {
+    strapi.log.warn('Failed to read SMTP settings from Global Settings, falling back to env:', error);
+  }
+
+  // Fallback to environment variables
   const host = process.env.SMTP_HOST;
   const port = parseInt(process.env.SMTP_PORT || '587', 10);
   const user = process.env.SMTP_USER;
@@ -50,36 +76,39 @@ function getSmtpConfig(): SmtpConfig | null {
 }
 
 /**
- * Get Contact Form recipients and subject from environment variables
- * - CONTACT_FORM_RECIPIENTS: comma-separated list of emails
- * - CONTACT_FORM_SUBJECT: optional custom subject
+ * Get Contact Form recipients and subject
+ * Priority: Global Settings -> Environment Variables
  */
 async function getContactConfig(strapi: Core.Strapi): Promise<{ recipients: string[]; subject: string } | null> {
-  // 1) Try to read from environment variables
-  const recipientsEnv = process.env.CONTACT_FORM_RECIPIENTS || '';
-  let recipients = recipientsEnv
-    .split(',')
-    .map((e) => e.trim())
-    .filter((e) => e.length > 0);
+  let recipients: string[] = [];
+  let subject = 'Новая заявка с сайта REACTOR';
 
-  let subject = process.env.CONTACT_FORM_SUBJECT || 'Новая заявка с сайта REACTOR';
+  // 1) Try to read from Global Settings first
+  try {
+    const settings = await strapi.documents('api::global-setting.global-setting').findFirst() as GlobalSettingsSmtp | null;
 
-  // 2) Fallback to Global Settings in admin if env not provided
+    if (settings?.contactFormEmails && Array.isArray(settings.contactFormEmails)) {
+      recipients = settings.contactFormEmails.filter((e) => typeof e === 'string' && e.trim().length > 0);
+    }
+
+    if (settings?.contactFormSubject && settings.contactFormSubject.trim().length > 0) {
+      subject = settings.contactFormSubject;
+    }
+  } catch (error) {
+    strapi.log.warn('Failed to read contact config from Global Settings:', error);
+  }
+
+  // 2) Fallback to environment variables if no recipients from Global Settings
   if (recipients.length === 0) {
-    try {
-      const settings = await strapi.documents('api::global-setting.global-setting').findFirst();
-      const settingsRecipients: string[] | undefined = (settings as any)?.contactFormEmails;
-      const settingsSubject: string | undefined = (settings as any)?.contactFormSubject;
+    const recipientsEnv = process.env.CONTACT_FORM_RECIPIENTS || '';
+    recipients = recipientsEnv
+      .split(',')
+      .map((e) => e.trim())
+      .filter((e) => e.length > 0);
 
-      if (Array.isArray(settingsRecipients)) {
-        recipients = settingsRecipients.filter((e) => typeof e === 'string' && e.trim().length > 0);
-      }
-
-      if (settingsSubject && settingsSubject.trim().length > 0) {
-        subject = settingsSubject;
-      }
-    } catch (error) {
-      strapi.log.error('Failed to read Global Settings for contact config:', error);
+    const subjectEnv = process.env.CONTACT_FORM_SUBJECT;
+    if (subjectEnv && subjectEnv.trim().length > 0) {
+      subject = subjectEnv;
     }
   }
 
@@ -202,17 +231,17 @@ ${data.message}
    * Send contact form email
    */
   async sendEmail(data: ContactFormData): Promise<{ success: boolean; message: string }> {
-    // Get SMTP config from environment
-    const smtp = getSmtpConfig();
+    // Get SMTP config (from Global Settings or env)
+    const smtp = await getSmtpConfig(strapi);
     if (!smtp) {
-      strapi.log.error('SMTP settings are incomplete. Check SMTP_HOST, SMTP_USER, SMTP_PASSWORD env variables.');
+      strapi.log.error('SMTP settings are incomplete. Configure in Global Settings or set SMTP_HOST, SMTP_USER, SMTP_PASSWORD env variables.');
       return { success: false, message: 'Email settings not configured' };
     }
 
-    // Get recipients and subject from environment
+    // Get recipients and subject
     const contactConfig = await getContactConfig(strapi);
     if (!contactConfig) {
-      strapi.log.error('No recipient emails configured. Set CONTACT_FORM_RECIPIENTS env variable.');
+      strapi.log.error('No recipient emails configured. Set in Global Settings or CONTACT_FORM_RECIPIENTS env variable.');
       return { success: false, message: 'No recipient emails configured' };
     }
 
@@ -240,4 +269,3 @@ ${data.message}
     }
   },
 });
-

@@ -1,0 +1,43 @@
+{
+  "collectionName": "components_sections_partners_grids",
+  "info": {
+    "displayName": "Partners Grid Section",
+    "description": "Grid of partner logos with optional links",
+    "icon": "grid"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "partners": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::partner.partner"
+    },
+    "columns": {
+      "type": "enumeration",
+      "enum": ["3", "4", "5", "6"],
+      "default": "4"
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
+

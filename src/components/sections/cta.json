@@ -1,0 +1,50 @@
+{
+  "collectionName": "components_sections_ctas",
+  "info": {
+    "displayName": "CTA Section",
+    "description": "Call-to-action section with title, description and button",
+    "icon": "cursor"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "backgroundGradient": {
+      "type": "string",
+      "required": false,
+      "default": "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)"
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}
+

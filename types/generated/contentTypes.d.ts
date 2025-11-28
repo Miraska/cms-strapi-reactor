@@ -390,14 +390,13 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
   collectionName: 'about_pages';
   info: {
-    description: 'About page content with all sections';
+    description: 'About page with Dynamic Zone sections';
     displayName: '\uD83D\uDCCB About Page';
-    mainField: 'title';
     pluralName: 'about-pages';
     singularName: 'about-page';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   pluginOptions: {
     i18n: {
@@ -405,41 +404,28 @@ export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
     };
   };
   attributes: {
-    ambition: Schema.Attribute.Component<'about.ambition-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    hero: Schema.Attribute.Component<'about.hero-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    joinUs: Schema.Attribute.Component<'about.join-us-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::about-page.about-page'>;
-    marketWaiting: Schema.Attribute.Component<'about.market-waiting-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    profit: Schema.Attribute.Component<'about.profit-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'sections.hero',
+        'sections.text-with-image',
+        'sections.features',
+        'sections.stats',
+        'sections.team-carousel',
+        'sections.rich-content',
+        'sections.cta',
+        'sections.accordion',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -449,16 +435,10 @@ export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: false;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<'About Page'>;
-    transcor: Schema.Attribute.Component<'about.transcor-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
           localized: true;
         };
-      }>;
+      }> &
+      Schema.Attribute.DefaultTo<'About Project'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
   };
@@ -467,14 +447,13 @@ export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
 export interface ApiContactPageContactPage extends Struct.SingleTypeSchema {
   collectionName: 'contact_pages';
   info: {
-    description: 'Contact page content with all sections';
+    description: 'Contact page with Dynamic Zone sections';
     displayName: '\uD83D\uDCDE Contact Page';
-    mainField: 'title';
     pluralName: 'contact-pages';
     singularName: 'contact-page';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   pluginOptions: {
     i18n: {
@@ -484,21 +463,24 @@ export interface ApiContactPageContactPage extends Struct.SingleTypeSchema {
   attributes: {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    form: Schema.Attribute.Component<'contact.form-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    hero: Schema.Attribute.Component<'contact.hero-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::contact-page.contact-page'>;
     publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'sections.hero',
+        'sections.contact-info',
+        'sections.text-with-image',
+        'sections.accordion',
+        'sections.rich-content',
+        'sections.cta',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -508,10 +490,10 @@ export interface ApiContactPageContactPage extends Struct.SingleTypeSchema {
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: false;
+          localized: true;
         };
       }> &
-      Schema.Attribute.DefaultTo<'Contact Page'>;
+      Schema.Attribute.DefaultTo<'Contact'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
   };
@@ -520,9 +502,8 @@ export interface ApiContactPageContactPage extends Struct.SingleTypeSchema {
 export interface ApiGlobalSettingGlobalSetting extends Struct.SingleTypeSchema {
   collectionName: 'global_settings';
   info: {
-    description: 'Global site settings: branding, navigation, footer, common texts, and contact form configuration';
+    description: 'Global site settings: branding, navigation, footer, and email configuration';
     displayName: '\u2699\uFE0F Global Settings';
-    mainField: 'siteName';
     pluralName: 'global-settings';
     singularName: 'global-setting';
   };
@@ -535,20 +516,13 @@ export interface ApiGlobalSettingGlobalSetting extends Struct.SingleTypeSchema {
     };
   };
   attributes: {
-    common: Schema.Attribute.Component<'global.common', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     contactFormEmails: Schema.Attribute.JSON &
-      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
         };
       }> &
-      Schema.Attribute.DefaultTo<['example@gmail.com']>;
+      Schema.Attribute.DefaultTo<[]>;
     contactFormSubject: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -576,15 +550,6 @@ export interface ApiGlobalSettingGlobalSetting extends Struct.SingleTypeSchema {
           localized: true;
         };
       }>;
-    investButtonText: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<'Invest Now'>;
-    investButtonUrl: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'https://goldenafrica-invest.com'>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::global-setting.global-setting'>;
     logo: Schema.Attribute.Media<'images'> &
@@ -615,7 +580,39 @@ export interface ApiGlobalSettingGlobalSetting extends Struct.SingleTypeSchema {
     siteName: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'REACTOR'>;
-    socialLinks: Schema.Attribute.Component<'global.social-link', true> &
+    smtpFromEmail: Schema.Attribute.Email &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    smtpFromName: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'REACTOR Website'>;
+    smtpHost: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    smtpPassword: Schema.Attribute.Password &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    smtpPort: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<587>;
+    smtpUser: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
@@ -629,14 +626,13 @@ export interface ApiGlobalSettingGlobalSetting extends Struct.SingleTypeSchema {
 export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
   collectionName: 'home_pages';
   info: {
-    description: 'Home page content with configurable sections';
+    description: 'Home page with Dynamic Zone sections';
     displayName: '\uD83C\uDFE0 Home Page';
-    mainField: 'title';
     pluralName: 'home-pages';
     singularName: 'home-page';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   pluginOptions: {
     i18n: {
@@ -644,53 +640,25 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
     };
   };
   attributes: {
-    about: Schema.Attribute.Component<'home.about-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    crowdinvesting: Schema.Attribute.Component<'home.crowdinvesting-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    hero: Schema.Attribute.Component<'home.hero-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    invest: Schema.Attribute.Component<'home.invest-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::home-page.home-page'>;
-    market: Schema.Attribute.Component<'home.market-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     publishedAt: Schema.Attribute.DateTime;
     sections: Schema.Attribute.DynamicZone<
       [
-        'home.hero-section',
-        'home.about-section',
-        'home.market-section',
-        'home.invest-section',
-        'home.tariffs-section',
-        'home.team-section',
-        'home.crowdinvesting-section',
-        'home.why-trust-us-section',
-        'home.technology-section',
-        'global.generation-opportunity',
+        'sections.hero',
+        'sections.about-preview',
+        'sections.market',
+        'sections.features',
+        'sections.stats',
+        'sections.tariffs',
+        'sections.team-carousel',
+        'sections.crowdinvesting',
+        'sections.why-trust-us',
+        'sections.technology-preview',
+        'sections.cta',
+        'sections.rich-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -704,53 +672,28 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
           localized: true;
         };
       }>;
-    tariffs: Schema.Attribute.Component<'home.tariffs-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    team: Schema.Attribute.Component<'home.team-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    technology: Schema.Attribute.Component<'home.technology-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: false;
+          localized: true;
         };
       }> &
       Schema.Attribute.DefaultTo<'Home Page'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    whyTrustUs: Schema.Attribute.Component<'home.why-trust-us-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
   };
 }
 
 export interface ApiInvestmentPageInvestmentPage extends Struct.SingleTypeSchema {
   collectionName: 'investment_pages';
   info: {
-    description: 'Investment page content with all sections';
+    description: 'Investment page with Dynamic Zone sections';
     displayName: '\uD83D\uDCB0 Investment Page';
-    mainField: 'title';
     pluralName: 'investment-pages';
     singularName: 'investment-page';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   pluginOptions: {
     i18n: {
@@ -758,35 +701,31 @@ export interface ApiInvestmentPageInvestmentPage extends Struct.SingleTypeSchema
     };
   };
   attributes: {
-    anyone: Schema.Attribute.Component<'investment.anyone-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    format: Schema.Attribute.Component<'investment.format-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    hero: Schema.Attribute.Component<'investment.hero-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::investment-page.investment-page'>;
-    profit: Schema.Attribute.Component<'investment.profit-section', false> &
+    publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'sections.hero',
+        'sections.investment-benefits',
+        'sections.investment-format',
+        'sections.investor-types',
+        'sections.stats',
+        'sections.features',
+        'sections.tariffs',
+        'sections.why-trust-us',
+        'sections.cta',
+        'sections.accordion',
+        'sections.rich-content',
+      ]
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -796,38 +735,71 @@ export interface ApiInvestmentPageInvestmentPage extends Struct.SingleTypeSchema
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: false;
+          localized: true;
         };
       }> &
-      Schema.Attribute.DefaultTo<'Investment Page'>;
+      Schema.Attribute.DefaultTo<'Investment'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    whyInvest: Schema.Attribute.Component<'investment.why-invest-section', false> &
+  };
+}
+
+export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
+  collectionName: 'partners';
+  info: {
+    description: 'Partner companies for partners page';
+    displayName: 'Partner';
+    pluralName: 'partners';
+    singularName: 'partner';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    category: Schema.Attribute.Enumeration<['strategic', 'technology', 'investment', 'other']> &
+      Schema.Attribute.DefaultTo<'other'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    description: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    whyTrustUs: Schema.Attribute.Component<'investment.why-trust-us-section', false> &
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::partner.partner'>;
+    logo: Schema.Attribute.Media<'images'>;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }>;
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    url: Schema.Attribute.String;
   };
 }
 
 export interface ApiPartnersPagePartnersPage extends Struct.SingleTypeSchema {
   collectionName: 'partners_pages';
   info: {
-    description: 'Partners page content with all sections';
+    description: 'Partners page with Dynamic Zone sections';
     displayName: '\uD83E\uDD1D Partners Page';
-    mainField: 'title';
     pluralName: 'partners-pages';
     singularName: 'partners-page';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   pluginOptions: {
     i18n: {
@@ -837,27 +809,25 @@ export interface ApiPartnersPagePartnersPage extends Struct.SingleTypeSchema {
   attributes: {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    hero: Schema.Attribute.Component<'partners.hero-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    list: Schema.Attribute.Component<'partners.list-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::partners-page.partners-page'>;
-    moreThanCompany: Schema.Attribute.Component<'partners.more-than-company-section', false> &
+    publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'sections.hero',
+        'sections.text-with-image',
+        'sections.partners-grid',
+        'sections.features',
+        'sections.stats',
+        'sections.cta',
+        'sections.rich-content',
+      ]
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -867,10 +837,10 @@ export interface ApiPartnersPagePartnersPage extends Struct.SingleTypeSchema {
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: false;
+          localized: true;
         };
       }> &
-      Schema.Attribute.DefaultTo<'Partners Page'>;
+      Schema.Attribute.DefaultTo<'Partners'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
   };
@@ -937,17 +907,16 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiTechnologyPageTechnologyPage extends Struct.SingleTypeSchema {
-  collectionName: 'technology_pages';
+export interface ApiTeamMemberTeamMember extends Struct.CollectionTypeSchema {
+  collectionName: 'team_members';
   info: {
-    description: 'Technology page content with all sections';
-    displayName: '\u26A1 Technology Page';
-    mainField: 'title';
-    pluralName: 'technology-pages';
-    singularName: 'technology-page';
+    description: 'Team members for carousel and about page';
+    displayName: 'Team Member';
+    pluralName: 'team-members';
+    singularName: 'team-member';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   pluginOptions: {
     i18n: {
@@ -955,13 +924,7 @@ export interface ApiTechnologyPageTechnologyPage extends Struct.SingleTypeSchema
     };
   };
   attributes: {
-    carousel: Schema.Attribute.Component<'technology.carousel-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    controlledRollout: Schema.Attribute.Component<'technology.controlled-rollout-section', false> &
+    bio: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -969,16 +932,75 @@ export interface ApiTechnologyPageTechnologyPage extends Struct.SingleTypeSchema
       }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    linkedin: Schema.Attribute.String;
     locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::technology-page.technology-page'>;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::team-member.team-member'>;
+    memberKey: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    photo: Schema.Attribute.Media<'images'>;
     publishedAt: Schema.Attribute.DateTime;
-    resonant: Schema.Attribute.Component<'technology.resonant-section', false> &
+    role: Schema.Attribute.String &
+      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    scientific: Schema.Attribute.Component<'technology.scientific-section', false> &
+    twitter: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTechnologyPageTechnologyPage extends Struct.SingleTypeSchema {
+  collectionName: 'technology_pages';
+  info: {
+    description: 'Technology page with Dynamic Zone sections';
+    displayName: '\u26A1 Technology Page';
+    pluralName: 'technology-pages';
+    singularName: 'technology-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::technology-page.technology-page'>;
+    publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'sections.hero',
+        'sections.features',
+        'sections.text-with-image',
+        'sections.stats',
+        'sections.image-carousel',
+        'sections.technology-preview',
+        'sections.rich-content',
+        'sections.cta',
+        'sections.accordion',
+      ]
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -993,16 +1015,10 @@ export interface ApiTechnologyPageTechnologyPage extends Struct.SingleTypeSchema
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: false;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<'Technology Page'>;
-    uniqueFeatures: Schema.Attribute.Component<'technology.unique-features-section', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
           localized: true;
         };
-      }>;
+      }> &
+      Schema.Attribute.DefaultTo<'Technology'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
   };
@@ -1441,8 +1457,10 @@ declare module '@strapi/strapi' {
       'api::global-setting.global-setting': ApiGlobalSettingGlobalSetting;
       'api::home-page.home-page': ApiHomePageHomePage;
       'api::investment-page.investment-page': ApiInvestmentPageInvestmentPage;
+      'api::partner.partner': ApiPartnerPartner;
       'api::partners-page.partners-page': ApiPartnersPagePartnersPage;
       'api::post.post': ApiPostPost;
+      'api::team-member.team-member': ApiTeamMemberTeamMember;
       'api::technology-page.technology-page': ApiTechnologyPageTechnologyPage;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

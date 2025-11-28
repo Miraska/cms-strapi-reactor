@@ -5,11 +5,10 @@
     "singularName": "contact-page",
     "pluralName": "contact-pages",
     "displayName": "📞 Contact Page",
-    "description": "Contact page content with all sections",
-    "mainField": "title"
+    "description": "Contact page with Dynamic Zone sections"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {
     "i18n": {
@@ -19,10 +18,11 @@
   "attributes": {
     "title": {
       "type": "string",
-      "default": "Contact Page",
+      "default": "Contact",
+      "required": false,
       "pluginOptions": {
         "i18n": {
-          "localized": false
+          "localized": true
         }
       }
     },
@@ -36,20 +36,16 @@
         }
       }
     },
-    "hero": {
-      "type": "component",
-      "repeatable": false,
-      "component": "contact.hero-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "form": {
-      "type": "component",
-      "repeatable": false,
-      "component": "contact.form-section",
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.hero",
+        "sections.contact-info",
+        "sections.text-with-image",
+        "sections.accordion",
+        "sections.rich-content",
+        "sections.cta"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -58,4 +54,3 @@
     }
   }
 }
-

@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_sections_accordions",
+  "info": {
+    "displayName": "Accordion Section",
+    "description": "FAQ-style accordion with expandable items",
+    "icon": "bulletList"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.card-item",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "allowMultiple": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
+

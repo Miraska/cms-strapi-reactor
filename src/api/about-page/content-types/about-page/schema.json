@@ -5,11 +5,10 @@
     "singularName": "about-page",
     "pluralName": "about-pages",
     "displayName": "📋 About Page",
-    "description": "About page content with all sections",
-    "mainField": "title"
+    "description": "About page with Dynamic Zone sections"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {
     "i18n": {
@@ -19,10 +18,11 @@
   "attributes": {
     "title": {
       "type": "string",
-      "default": "About Page",
+      "default": "About Project",
+      "required": false,
       "pluginOptions": {
         "i18n": {
-          "localized": false
+          "localized": true
         }
       }
     },
@@ -36,60 +36,18 @@
         }
       }
     },
-    "hero": {
-      "type": "component",
-      "repeatable": false,
-      "component": "about.hero-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "ambition": {
-      "type": "component",
-      "repeatable": false,
-      "component": "about.ambition-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "profit": {
-      "type": "component",
-      "repeatable": false,
-      "component": "about.profit-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "transcor": {
-      "type": "component",
-      "repeatable": false,
-      "component": "about.transcor-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "marketWaiting": {
-      "type": "component",
-      "repeatable": false,
-      "component": "about.market-waiting-section",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "joinUs": {
-      "type": "component",
-      "repeatable": false,
-      "component": "about.join-us-section",
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.hero",
+        "sections.text-with-image",
+        "sections.features",
+        "sections.stats",
+        "sections.team-carousel",
+        "sections.rich-content",
+        "sections.cta",
+        "sections.accordion"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -98,4 +56,3 @@
     }
   }
 }
-

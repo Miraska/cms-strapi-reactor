@@ -1,9 +1,9 @@
 {
-  "collectionName": "components_global_footers",
+  "collectionName": "components_sections_why_trust_us",
   "info": {
-    "displayName": "Footer",
-    "description": "Footer content and social links",
-    "icon": "apps"
+    "displayName": "Why Trust Us Section",
+    "description": "Interactive trust section with toggle and cards",
+    "icon": "shield"
   },
   "attributes": {
     "title": {
@@ -15,42 +15,39 @@
         }
       }
     },
-    "copyright": {
+    "primaryText": {
       "type": "string",
-      "required": false,
+      "required": true,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "mapLabel": {
+    "secondaryText": {
       "type": "string",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "socialLabel": {
-      "type": "string",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "socialLinks": {
-      "type": "component",
-      "repeatable": true,
-      "component": "global.social-link",
+      "required": true,
+      "default": "REACTOR",
       "pluginOptions": {
         "i18n": {
           "localized": false
         }
       }
+    },
+    "cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.card-item",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "showToggle": {
+      "type": "boolean",
+      "default": true
     }
   }
 }
+

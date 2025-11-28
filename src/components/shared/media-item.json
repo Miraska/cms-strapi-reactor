@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_shared_media_items",
+  "info": {
+    "displayName": "Media Item",
+    "description": "An image or video with caption and alt text",
+    "icon": "picture"
+  },
+  "attributes": {
+    "media": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images", "videos"]
+    },
+    "alt": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "caption": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+

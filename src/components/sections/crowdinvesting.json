@@ -1,12 +1,12 @@
 {
-  "collectionName": "components_global_navigations",
+  "collectionName": "components_sections_crowdinvestings",
   "info": {
-    "displayName": "Navigation",
-    "description": "Main navigation menu items and invest button settings",
-    "icon": "layer"
+    "displayName": "Crowdinvesting Section",
+    "description": "Crowdinvesting information section",
+    "icon": "handHeart"
   },
   "attributes": {
-    "investment": {
+    "title": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -15,7 +15,16 @@
         }
       }
     },
-    "technology": {
+    "description": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "cardTopText": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -24,7 +33,17 @@
         }
       }
     },
-    "aboutProject": {
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.text-item",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "minimumEntryLabel": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -33,7 +52,7 @@
         }
       }
     },
-    "resources": {
+    "minimumEntryAmount": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -42,44 +61,12 @@
         }
       }
     },
-    "partners": {
-      "type": "string",
+    "image": {
+      "type": "media",
+      "multiple": false,
       "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "contact": {
-      "type": "string",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "investButtonText": {
-      "type": "string",
-      "required": false,
-      "default": "Invest Now",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "investButtonUrl": {
-      "type": "string",
-      "required": false,
-      "default": "https://goldenafrica-invest.com"
-    },
-    "investButtonVariant": {
-      "type": "enumeration",
-      "enum": ["primary", "yellow", "secondary", "white", "outline"],
-      "default": "white",
-      "required": false
+      "allowedTypes": ["images"]
     }
   }
 }
+

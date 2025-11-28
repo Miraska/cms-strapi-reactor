@@ -1,0 +1,45 @@
+{
+  "collectionName": "components_sections_investor_types",
+  "info": {
+    "displayName": "Investor Types Section",
+    "description": "Section showing who can invest",
+    "icon": "user"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "types": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.card-item",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}
+

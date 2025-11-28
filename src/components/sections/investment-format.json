@@ -1,0 +1,49 @@
+{
+  "collectionName": "components_sections_investment_formats",
+  "info": {
+    "displayName": "Investment Format Section",
+    "description": "Investment format and options section",
+    "icon": "layer"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitle": {
+      "type": "text",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "formats": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.card-item",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
+

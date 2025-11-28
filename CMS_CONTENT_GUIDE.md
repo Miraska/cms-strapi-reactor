@@ -1,434 +1,333 @@
 # CMS Content Management Guide
 
-## Architecture Overview
+## 🏗️ Architecture Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                        STRAPI CMS                           │
 ├─────────────────────────────────────────────────────────────┤
-│  PAGES (Single Types) - каждая страница отдельно:           │
-│  ├── 🏠 Home Page         - секции + Dynamic Zone           │
-│  ├── 📋 About Page        - секции страницы About           │
-│  ├── ⚡ Technology Page   - секции страницы Technology      │
-│  ├── 💰 Investment Page   - секции страницы Investment      │
-│  ├── 🤝 Partners Page     - секции страницы Partners        │
-│  └── 📞 Contact Page      - секции страницы Contact         │
 │                                                             │
-│  SETTINGS:                                                  │
-│  └── ⚙️ Global Settings   - Navigation, Footer, Social      │
+│  🔷 SINGLE TYPES (Pages with Dynamic Zone)                  │
+│  ├── 🏠 Home Page                                           │
+│  │   ├── seo: shared.seo                                    │
+│  │   └── sections: [Dynamic Zone]                           │
+│  │       ├── sections.hero                                  │
+│  │       ├── sections.about-preview                         │
+│  │       ├── sections.market                                │
+│  │       ├── sections.features                              │
+│  │       ├── sections.team-carousel ─────┐                  │
+│  │       ├── sections.tariffs            │                  │
+│  │       ├── sections.cta                │                  │
+│  │       └── ...                         │                  │
+│  │                                       │                  │
+│  ├── 📋 About Page                       │                  │
+│  ├── 💰 Investment Page                  │                  │
+│  ├── ⚡ Technology Page                  │                  │
+│  ├── 🤝 Partners Page ───────────────────│──┐               │
+│  └── 📞 Contact Page                     │  │               │
+│                                          │  │               │
+│  🔷 GLOBAL (Single Type)                 │  │               │
+│  └── ⚙️ Global Settings                  │  │               │
+│      ├── branding (logo, favicon)        │  │               │
+│      ├── navigation[]                    │  │               │
+│      ├── footer                          │  │               │
+│      └── social-links[]                  │  │               │
+│                                          │  │               │
+│  🔶 COLLECTIONS                          │  │               │
+│  ├── 👤 Team Member ◄────────────────────┘  │               │
+│  ├── 🤝 Partner ◄───────────────────────────┘               │
+│  └── 📝 Post (Blog articles)                                │
 │                                                             │
-│  COLLECTIONS:                                               │
-│  └── 📰 Posts             - Blog posts / Resources          │
+│  🔷 SHARED COMPONENTS (Building blocks)                     │
+│  ├── shared.seo (meta title, description, og)               │
+│  ├── shared.button (text, url, variant)                     │
+│  ├── shared.card-item (title, text, icon)                   │
+│  ├── shared.feature-item (title, description, icon)         │
+│  ├── shared.stat-item (value, label, description)           │
+│  └── shared.media-item (media, alt, caption)                │
+│                                                             │
+│  🔷 SECTION COMPONENTS (For Dynamic Zone)                   │
+│  ├── sections.hero                                          │
+│  ├── sections.features                                      │
+│  ├── sections.stats                                         │
+│  ├── sections.cta                                           │
+│  ├── sections.team-carousel (→ Team Member relation)        │
+│  ├── sections.partners-grid (→ Partner relation)            │
+│  ├── sections.why-trust-us                                  │
+│  ├── sections.tariffs                                       │
+│  ├── sections.text-with-image                               │
+│  ├── sections.rich-content                                  │
+│  ├── sections.accordion                                     │
+│  └── ... (15+ section types)                                │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                 FRONTEND (React + FSD + TypeScript)         │
+│                 FRONTEND (React + FSD)                      │
 ├─────────────────────────────────────────────────────────────┤
 │  shared/                                                    │
-│  ├── hooks/usePage.ts     → Universal usePage<T>() hook     │
-│  ├── lib/useContent.ts    → useContent() with i18n fallback │
-│  ├── lib/preview.tsx      → Preview mode context & hook     │
-│  └── api/strapi/          → fetchPageContent() service      │
+│  ├── ui/SectionRenderer/   → Renders Dynamic Zone sections  │
+│  ├── hooks/usePage.ts      → Universal usePage<T>() hook    │
+│  ├── lib/useContent.ts     → useContent() with i18n fallback│
+│  └── types/sections.ts     → TypeScript types for sections  │
 │                                                             │
 │  entities/                                                  │
-│  ├── home-page/types.ts   → TypeScript types only           │
-│  ├── about-page/types.ts  → TypeScript types only           │
-│  ├── global-settings/     → Navigation, Social Links        │
-│  └── ...                  → Types for each page             │
+│  ├── team-member/          → Team Members Collection        │
+│  ├── partner/              → Partners Collection            │
+│  └── post/                 → Posts Collection               │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Global Settings Fields
+## 📊 What You Can Do (Without Developer)
 
-### Navigation Items (`navItems`)
+| Action                                  | Supported |
+| --------------------------------------- | --------- |
+| ✅ Change order of sections on page     | Yes       |
+| ✅ Add/remove sections from page        | Yes       |
+| ✅ Edit all texts, titles, descriptions | Yes       |
+| ✅ Upload/change images                 | Yes       |
+| ✅ Configure colors, gradients          | Yes       |
+| ✅ Add/edit/remove Team Members         | Yes       |
+| ✅ Add/edit/remove Partners             | Yes       |
+| ✅ Create/edit blog posts               | Yes       |
+| ✅ Configure navigation                 | Yes       |
+| ✅ Change social links                  | Yes       |
+| ❌ Create NEW page (new URL)            | No\*      |
+| ❌ Add NEW section type                 | No        |
+| ❌ Change section structure             | No        |
 
-Добавляйте и управляйте элементами навигации:
+\*New pages are rarely needed and require developer to add routing.
 
-| Field        | Description                       |
-| ------------ | --------------------------------- |
-| `label`      | Текст ссылки (локализуемый)       |
-| `path`       | URL путь (например `/investment`) |
-| `isExternal` | Открывать в новой вкладке         |
-| `order`      | Порядок сортировки                |
-| `isActive`   | Показывать/скрывать пункт         |
+## 🎯 Section Components Reference
 
-### Social Links (`socialLinks`)
+### Hero Section (`sections.hero`)
 
-Управление социальными сетями:
+| Field                | Type    | Description             |
+| -------------------- | ------- | ----------------------- |
+| `title`              | Text    | Main heading            |
+| `subtitle`           | Text    | Subheading              |
+| `cta`                | Button  | Call-to-action button   |
+| `backgroundImage`    | Media   | Background image        |
+| `backgroundGradient` | String  | CSS gradient            |
+| `alignment`          | Enum    | left, center, right     |
+| `showParticles`      | Boolean | Show particle animation |
 
-| Field      | Description                                                                          |
-| ---------- | ------------------------------------------------------------------------------------ |
-| `platform` | Платформа: linkedin, twitter, facebook, instagram, youtube, telegram, email, website |
-| `url`      | URL ссылки                                                                           |
-| `label`    | Альтернативный текст                                                                 |
-| `isActive` | Показывать/скрывать                                                                  |
+### Features Section (`sections.features`)
 
-### Branding (Favicon & Logo)
+| Field      | Type      | Description            |
+| ---------- | --------- | ---------------------- |
+| `title`    | String    | Section title          |
+| `subtitle` | Text      | Section description    |
+| `items[]`  | Component | Array of feature items |
+| `columns`  | Enum      | 2, 3, or 4 columns     |
+| `variant`  | Enum      | cards, list, icons     |
 
-| Field     | Description                                         |
-| --------- | --------------------------------------------------- |
-| `favicon` | Иконка сайта (favicon) - загрузите PNG, SVG или ICO |
-| `logo`    | Логотип сайта для шапки                             |
+### Stats Section (`sections.stats`)
 
-**Рекомендации для favicon:**
+| Field             | Type      | Description            |
+| ----------------- | --------- | ---------------------- |
+| `title`           | String    | Section title          |
+| `items[]`         | Component | Array of stat items    |
+| `backgroundImage` | Media     | Background image       |
+| `variant`         | Enum      | default, cards, inline |
 
-- Размер: 32x32 или 64x64 пикселей
-- Форматы: PNG, SVG (рекомендуется), ICO
-- SVG автоматически масштабируется
+### Team Carousel (`sections.team-carousel`)
 
-### Other Fields
+| Field            | Type     | Description                     |
+| ---------------- | -------- | ------------------------------- |
+| `title`          | String   | Section title                   |
+| `members`        | Relation | Link to Team Members collection |
+| `showNavigation` | Boolean  | Show prev/next buttons          |
+| `autoplay`       | Boolean  | Auto-rotate slides              |
 
-| Field                   | Description                         |
-| ----------------------- | ----------------------------------- |
-| `siteName`              | Название сайта                      |
-| `siteDescription`       | Описание сайта (локализуемый)       |
-| `navigation`            | Устаревшее - только текст навигации |
-| `footer`                | Контент футера                      |
-| `common`                | Общие UI тексты                     |
-| `generationOpportunity` | CTA секция                          |
-| `investButtonUrl`       | URL кнопки инвестиций               |
-| `investButtonText`      | Текст кнопки инвестиций             |
-| `contactFormEmails`     | Email получателей форм              |
+### CTA Section (`sections.cta`)
 
-## Two Ways to Use Content
+| Field                | Type   | Description      |
+| -------------------- | ------ | ---------------- |
+| `title`              | String | Heading          |
+| `description`        | Text   | Description text |
+| `button`             | Button | CTA button       |
+| `backgroundGradient` | String | CSS gradient     |
 
-### 1. Static Sections (простой подход)
+### Why Trust Us (`sections.why-trust-us`)
 
-Секции в фиксированном порядке. Контент-менеджер меняет только текст.
+| Field           | Type      | Description          |
+| --------------- | --------- | -------------------- |
+| `title`         | String    | Section title        |
+| `primaryText`   | String    | Main text            |
+| `secondaryText` | String    | Brand name (REACTOR) |
+| `cards[]`       | Component | Trust factor cards   |
+| `showToggle`    | Boolean   | Show toggle switch   |
 
-```tsx
-// Простое использование - фиксированная структура
-function HomePage() {
-  const heroTitle = useContent('home', 'hero.title', 'home.heroTitle');
-  const heroSubtitle = useContent('home', 'hero.subtitle', 'home.heroSubtitle');
+### Partners Grid (`sections.partners-grid`)
 
-  return (
-    <>
-      <HeroSection title={heroTitle} subtitle={heroSubtitle} />
-      <AboutSection />
-      <MarketSection />
-    </>
-  );
-}
+| Field             | Type     | Description                 |
+| ----------------- | -------- | --------------------------- |
+| `title`           | String   | Section title               |
+| `partners`        | Relation | Link to Partners collection |
+| `columns`         | Enum     | 3, 4, 5, 6                  |
+| `showDescription` | Boolean  | Show partner descriptions   |
+
+## 📦 Collections
+
+### Team Member
+
+| Field      | Type    | Required | Localized |
+| ---------- | ------- | -------- | --------- |
+| `name`     | String  | Yes      | No        |
+| `role`     | String  | Yes      | Yes       |
+| `bio`      | Text    | No       | Yes       |
+| `photo`    | Media   | No       | -         |
+| `linkedin` | String  | No       | -         |
+| `twitter`  | String  | No       | -         |
+| `email`    | Email   | No       | -         |
+| `order`    | Integer | No       | -         |
+| `isActive` | Boolean | No       | -         |
+
+### Partner
+
+| Field         | Type    | Required | Localized |
+| ------------- | ------- | -------- | --------- |
+| `name`        | String  | Yes      | No        |
+| `description` | Text    | No       | Yes       |
+| `logo`        | Media   | No       | -         |
+| `url`         | String  | No       | -         |
+| `order`       | Integer | No       | -         |
+| `category`    | Enum    | No       | -         |
+| `isActive`    | Boolean | No       | -         |
+
+## 🔧 How to Use Dynamic Zone
+
+### In Strapi Admin Panel
+
+1. Go to **Content Manager** → Select page (e.g., Home Page)
+2. In **Sections** field, click **Add a component**
+3. Select section type (e.g., Hero, Features, CTA)
+4. Fill in the section fields
+5. **Drag & drop** to reorder sections
+6. Click **Save** then **Publish**
+
+### Example: Home Page Setup
+
+```
+Sections [Dynamic Zone]
+├── 🎯 Hero Section
+│   ├── Title: "Transforming Nuclear Energy"
+│   ├── Subtitle: "Safe, clean, affordable..."
+│   └── CTA: { text: "Invest Now", url: "..." }
+│
+├── 📊 Market Section
+│   ├── Title: "Market Opportunity"
+│   └── Stats: [ { value: "$10.7T", label: "..." } ]
+│
+├── 👥 Team Carousel
+│   ├── Title: "Our Team"
+│   └── Members: [Select from Team Members]
+│
+└── ➕ Add Section... [dropdown]
 ```
 
-### 2. Dynamic Zones (гибкий подход)
+## 💡 Best Practices
 
-Контент-менеджер может менять порядок и состав секций.
+### Content Editing
 
-```tsx
-import { DynamicSections } from '@/shared/ui';
+1. **Always preview before publish** - Use preview mode
+2. **Keep locales in sync** - Update both EN and RU
+3. **Use collections for reusable data** - Team, Partners
+4. **Optimize images** - Compress before upload
+5. **Test on mobile** - Check responsive layouts
 
-const componentMap = {
-  'home.hero-section': HeroSection,
-  'home.about-section': AboutSection,
-  'home.market-section': MarketSection,
-  'global.generation-opportunity': GenerationOpportunity,
-};
+### SEO
 
-function HomePage() {
-  const { content, isPreview } = usePage<HomePageContent>('home');
+1. Fill in **SEO component** for every page
+2. Use descriptive **meta titles** (< 60 chars)
+3. Write compelling **meta descriptions** (< 160 chars)
+4. Upload **OG images** for social sharing
 
-  return (
-    <DynamicSections
-      sections={content?.sections}
-      componentMap={componentMap}
-      isPreview={isPreview}
-    />
-  );
-}
-```
+### Images
 
-## Usage Examples
+| Type            | Recommended Size | Format    |
+| --------------- | ---------------- | --------- |
+| Hero background | 1920x1080        | JPG, WebP |
+| Team photos     | 400x400          | PNG, WebP |
+| Partner logos   | 200x200          | PNG, SVG  |
+| Icons           | 64x64            | SVG, PNG  |
+| OG images       | 1200x630         | JPG, PNG  |
 
-### Simple Content with Fallback
-
-```tsx
-import { useContent } from '@/shared/lib';
-
-function HeroSection() {
-  // CMS path: hero.title, fallback: i18n key 'home.heroTitle'
-  const title = useContent('home', 'hero.title', 'home.heroTitle');
-  const subtitle = useContent('home', 'hero.subtitle', 'home.heroSubtitle');
-
-  return (
-    <section>
-      <h1>{title}</h1>
-      <p>{subtitle}</p>
-    </section>
-  );
-}
-```
-
-### Section Content (multiple fields)
-
-```tsx
-import { useContentSection } from '@/shared/lib';
-
-function MarketSection() {
-  const market = useContentSection('home', 'market', {
-    title: 'home.marketTitle',
-    benefit1: 'home.marketBenefit1',
-    benefit2: 'home.marketBenefit2',
-    benefit3: 'home.marketBenefit3',
-  });
-
-  return (
-    <section>
-      <h2>{market.title}</h2>
-      <ul>
-        <li>{market.benefit1}</li>
-        <li>{market.benefit2}</li>
-        <li>{market.benefit3}</li>
-      </ul>
-    </section>
-  );
-}
-```
-
-### Raw Page Content
-
-```tsx
-import { usePage } from '@/shared/hooks';
-import type { HomePageContent } from '@/entities';
-
-function CustomSection() {
-  const { content, isLoading, isPreview } = usePage<HomePageContent>('home');
-
-  if (isLoading) return <Spinner />;
-
-  return (
-    <div>
-      {isPreview && <div className="preview-badge">Preview Mode</div>}
-      <h1>{content?.hero?.title}</h1>
-    </div>
-  );
-}
-```
-
-### Global Settings & Navigation
-
-```tsx
-import { useGlobalSettings } from '@/entities';
-
-function Header() {
-  const { settings } = useGlobalSettings();
-
-  return (
-    <nav>
-      {/* Use structured navItems if available */}
-      {settings.navItems?.map((item) => (
-        <a key={item.path} href={item.path} target={item.isExternal ? '_blank' : undefined}>
-          {item.label}
-        </a>
-      ))}
-
-      {/* Invest button with CMS text */}
-      <a href={settings.investButtonUrl}>{settings.investButtonText}</a>
-    </nav>
-  );
-}
-```
-
-### Social Links in Footer
-
-```tsx
-import { useGlobalSettings } from '@/entities';
-
-function Footer() {
-  const { settings } = useGlobalSettings();
-
-  return (
-    <div className="social-links">
-      {settings.socialLinks?.map((link) => (
-        <a key={link.platform} href={link.url} aria-label={link.label || link.platform}>
-          <SocialIcon platform={link.platform} />
-        </a>
-      ))}
-    </div>
-  );
-}
-```
-
-## Preview Mode
-
-### Setup in Strapi
-
-1. Configure `config/admin.ts`:
-
-```typescript
-preview: {
-  enabled: true,
-  allowedOrigins: [env('CLIENT_URL')],
-  async handler(uid, { documentId, locale, status }) {
-    // Returns preview URL for frontend
-  },
-},
-```
-
-2. Set environment variables:
-
-```env
-CLIENT_URL=http://localhost:5173
-PREVIEW_SECRET=your-secret-key
-```
-
-### Using Preview in Frontend
-
-Preview mode is automatically detected via URL parameters:
-
-```tsx
-import { usePreview } from '@/shared/lib';
-
-function PageComponent() {
-  const { isPreview, contentStatus, disablePreview } = usePreview();
-
-  // contentStatus is 'draft' in preview mode, 'published' otherwise
-  // API calls automatically use correct status
-
-  return (
-    <div>
-      {isPreview && (
-        <div className="preview-banner">
-          Preview Mode
-          <button onClick={disablePreview}>Exit</button>
-        </div>
-      )}
-      <Content />
-    </div>
-  );
-}
-```
-
-Preview URL format: `https://yoursite.com/?preview=true&secret=xxx`
-
-## Content Types Reference
-
-### 🏠 Home Page
-
-| Section          | Fields                                                     |
-| ---------------- | ---------------------------------------------------------- |
-| `seo`            | metaTitle, metaDescription, canonicalUrl, ogImage          |
-| `hero`           | title, subtitle, ctaButtonText, ctaButtonUrl               |
-| `about`          | text, fromLabel, toLabel, quote                            |
-| `market`         | title, benefit1-4, statsTitle, statsPerMonth, statsProfit  |
-| `invest`         | title, description, card1-3Title, card1-3Text              |
-| `tariffs`        | title, scenarioTitle, earlyInvestment, equity, pricingText |
-| `team`           | title, members[], previousLabel, nextLabel                 |
-| `crowdinvesting` | title, description, cardTopText, openToAll                 |
-| `whyTrustUs`     | title, reactorTitle, card1-4Text                           |
-| `technology`     | title, processText, synthesisText, altersText              |
-| `sections`       | **Dynamic Zone** - reorderable sections                    |
-
-### ⚙️ Global Settings
-
-| Field                   | Description                           |
-| ----------------------- | ------------------------------------- |
-| `siteName`              | Website name                          |
-| `siteDescription`       | Website description (localized)       |
-| `favicon`               | Site favicon (PNG, SVG, ICO)          |
-| `logo`                  | Site logo for header                  |
-| `navigation`            | Menu item texts (legacy)              |
-| `navItems`              | Structured navigation items with URLs |
-| `footer`                | Footer content                        |
-| `common`                | Common UI texts                       |
-| `generationOpportunity` | CTA section                           |
-| `socialLinks`           | Social media links (structured)       |
-| `investButtonUrl`       | Main CTA button URL                   |
-| `investButtonText`      | Main CTA button text                  |
-| `contactFormEmails`     | Contact form recipients               |
-| `contactFormSubject`    | Email subject                         |
-
-## API Endpoints
+## 🌐 API Endpoints
 
 | Endpoint                             | Description             |
 | ------------------------------------ | ----------------------- |
-| `GET /api/home-page?locale=en`       | Home page content       |
-| `GET /api/about-page?locale=en`      | About page content      |
-| `GET /api/technology-page?locale=en` | Technology page content |
-| `GET /api/investment-page?locale=en` | Investment page content |
-| `GET /api/partners-page?locale=en`   | Partners page content   |
-| `GET /api/contact-page?locale=en`    | Contact page content    |
+| `GET /api/home-page?locale=en`       | Home page with sections |
+| `GET /api/about-page?locale=en`      | About page              |
+| `GET /api/investment-page?locale=en` | Investment page         |
+| `GET /api/technology-page?locale=en` | Technology page         |
+| `GET /api/partners-page?locale=en`   | Partners page           |
+| `GET /api/contact-page?locale=en`    | Contact page            |
 | `GET /api/global-setting?locale=en`  | Global settings         |
+| `GET /api/team-members?locale=en`    | Team members            |
+| `GET /api/partners?locale=en`        | Partners                |
 | `GET /api/posts?locale=en`           | Blog posts              |
 
-### Preview API
+### Query Parameters
 
-For preview mode, add `status=draft`:
+| Parameter  | Description          | Example         |
+| ---------- | -------------------- | --------------- |
+| `locale`   | Language             | `?locale=ru`    |
+| `populate` | Relations to include | `?populate=*`   |
+| `status`   | Draft or published   | `?status=draft` |
+
+## 🔄 Fallback System
+
+The frontend uses a cascading fallback system:
 
 ```
-GET /api/home-page?locale=en&status=draft
+1. CMS Content (Dynamic Zone)
+   ↓ if empty
+2. CMS Collection (Team Members, Partners)
+   ↓ if empty
+3. i18n Translation Files
+   ↓ if missing
+4. Default English Text
 ```
 
-## Environment Variables
+This ensures content is **never empty** even if CMS is unavailable.
 
-### Strapi (.env)
+## 🚀 Deployment Checklist
 
-```env
-# Required
-HOST=0.0.0.0
-PORT=1337
-APP_KEYS=your-app-keys
-API_TOKEN_SALT=your-salt
-ADMIN_JWT_SECRET=your-jwt-secret
-TRANSFER_TOKEN_SALT=your-salt
-JWT_SECRET=your-jwt-secret
+Before deploying content changes:
 
-# Preview
-CLIENT_URL=http://localhost:5173
-PREVIEW_SECRET=your-secret-key
-```
+- [ ] Content is **Published** (not Draft)
+- [ ] Both **EN** and **RU** locales updated
+- [ ] SEO fields are filled
+- [ ] Images are optimized
+- [ ] Links are tested
+- [ ] Preview mode checked
 
-### Frontend (.env)
+## ❓ Troubleshooting
 
-```env
-# Strapi Connection
-VITE_STRAPI_URL=http://localhost:1337
-VITE_STRAPI_TOKEN=your-api-token
-VITE_USE_STRAPI=true
+### Content not showing?
 
-# Preview Mode
-VITE_PREVIEW_SECRET=your-secret-key
-```
+1. Check if content is **Published**
+2. Check correct **locale** is selected
+3. Clear browser cache
+4. Check API response in Network tab
 
-## Best Practices
+### Sections not in correct order?
 
-1. **Always provide i18n fallback** - Content is never empty
-2. **Use TypeScript types** - Import from `@/entities`
-3. **Cache wisely** - React Query caches for 5 minutes
-4. **Preview before publish** - Use built-in preview
-5. **Keep locales updated** - They serve as fallback content
-6. **Use navItems** - Prefer structured navItems over navigation
-7. **Use socialLinks array** - Platform + URL structure
+1. Drag sections in Strapi to reorder
+2. Save and Publish
+3. Wait 5 seconds for cache to clear
 
-## Troubleshooting
+### Images not loading?
 
-### Content not updating?
+1. Check image is uploaded correctly
+2. Verify file size < 10MB
+3. Check URL in API response
+4. Try re-uploading image
 
-- Check if content is published (not draft)
-- Refresh page to clear React Query cache
-- Verify correct locale is selected
+### Team/Partners not showing?
 
-### Preview not working?
-
-- Check `CLIENT_URL` env variable in Strapi
-- Verify `VITE_PREVIEW_SECRET` matches Strapi's `PREVIEW_SECRET`
-- Ensure URL has correct format: `?preview=true&secret=xxx`
-
-### Navigation not changing?
-
-- Add items to `navItems` array in Global Settings
-- Set `isActive: true` for items to show
-- Set correct `order` for sorting
-
-### Social links not showing?
-
-- Add links to `socialLinks` component in Global Settings
-- Set `isActive: true` for links to show
-- Ensure URL format is correct (e.g., `mailto:` for email)
-
-### API errors?
-
-- Run Strapi: `cd cms-strapi-reactor && npm run dev`
-- Check permissions: Settings → Roles → Public
-- Verify populate config includes all needed relations
+1. Check `isActive: true` in Collection
+2. Verify relation is set in section
+3. Check `order` field for sorting
