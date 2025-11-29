@@ -32,20 +32,19 @@ ENV NODE_ENV=production
 WORKDIR /app
 
 # Copy runtime files (as root first)
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/favicon.ico ./favicon.ico
+COPY --from=builder --chown=node:node /app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/dist ./dist
+COPY --from=builder --chown=node:node /app/public ./public
+COPY --from=builder --chown=node:node /app/package*.json ./
+COPY --from=builder --chown=node:node /app/favicon.ico ./favicon.ico
 
 # Strapi v5 looks for config/src in root, and admin build in /build
-# Create symlinks to dist/ subfolders
-RUN ln -s /app/dist/config /app/config && \
-    ln -s /app/dist/src /app/src && \
-    ln -s /app/dist/build /app/build
-
-# Set ownership to node user
-RUN chown -R node:node /app
+# Copy compiled files to expected locations (symlinks can fail in some environments)
+RUN mkdir -p ./config ./src ./build && \
+    cp -r ./dist/config/* ./config/ 2>/dev/null || true && \
+    cp -r ./dist/src/* ./src/ 2>/dev/null || true && \
+    cp -r ./dist/build/* ./build/ 2>/dev/null || true && \
+    chown -R node:node ./config ./src ./build
 
 # Switch to non-root user
 USER node

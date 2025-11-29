@@ -192,13 +192,8 @@ jobs:
               container_name: strapi-cms
               env_file: .env
               environment:
-                - NODE_ENV=production
-                - DATABASE_CLIENT=postgres
+                # Only override values that MUST differ from .env
                 - DATABASE_HOST=postgres
-                - DATABASE_PORT=5432
-                - DATABASE_NAME=\${DATABASE_NAME}
-                - DATABASE_USERNAME=\${DATABASE_USERNAME}
-                - DATABASE_PASSWORD=\${DATABASE_PASSWORD}
               depends_on:
                 postgres:
                   condition: service_healthy
@@ -213,7 +208,6 @@ jobs:
             postgres:
               image: postgres:16-alpine
               container_name: strapi-db
-              env_file: .env
               environment:
                 - POSTGRES_DB=\${DATABASE_NAME}
                 - POSTGRES_USER=\${DATABASE_USERNAME}

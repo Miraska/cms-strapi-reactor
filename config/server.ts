@@ -6,4 +6,8 @@ export default ({ env }) => ({
 	app: {
 		keys: env.array('APP_KEYS'),
 	},
+	// Telemetry settings - can be disabled in production
+	telemetry: {
+		disabled: env.bool('STRAPI_TELEMETRY_DISABLED', false),
+	},
 });
