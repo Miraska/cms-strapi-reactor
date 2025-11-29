@@ -34,14 +34,15 @@ WORKDIR /app
 # Copy runtime files (as root first)
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/build ./build
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/favicon.ico ./favicon.ico
 
-# Strapi v5 looks for config in root /config in production, create symlinks
+# Strapi v5 looks for config/src in root, and admin build in /build
+# Create symlinks to dist/ subfolders
 RUN ln -s /app/dist/config /app/config && \
-    ln -s /app/dist/src /app/src
+    ln -s /app/dist/src /app/src && \
+    ln -s /app/dist/build /app/build
 
 # Set ownership to node user
 RUN chown -R node:node /app
