@@ -122,6 +122,12 @@ coverage
 ############################
 
 .env
+# Environment files (keep only .env.example in git)
+.env.development
+.env.production
+.env.*.local
+.env.*
+!.env.example
 license.txt
 exports
 .strapi
