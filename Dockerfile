@@ -31,15 +31,22 @@ FROM node:20-bookworm-slim AS runner
 ENV NODE_ENV=production
 WORKDIR /app
 
-# Create non-root user (node user exists by default)
-USER node
+# Copy runtime files (as root first)
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/favicon.ico ./favicon.ico
 
-# Copy only the necessary runtime files
-COPY --chown=node:node --from=builder /app/node_modules ./node_modules
-COPY --chown=node:node --from=builder /app/dist ./dist
-COPY --chown=node:node --from=builder /app/public ./public
-COPY --chown=node:node --from=builder /app/package*.json ./
-COPY --chown=node:node --from=builder /app/favicon.ico ./favicon.ico
+# Strapi v5 looks for config in root /config in production, create symlinks
+RUN ln -s /app/dist/config /app/config && \
+    ln -s /app/dist/src /app/src
+
+# Set ownership to node user
+RUN chown -R node:node /app
+
+# Switch to non-root user
+USER node
 
 EXPOSE 1337
 
