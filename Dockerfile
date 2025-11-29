@@ -40,11 +40,12 @@ COPY --from=builder --chown=node:node /app/favicon.ico ./favicon.ico
 
 # Strapi v5 looks for config/src in root, and admin build in /build
 # Copy compiled files to expected locations (symlinks can fail in some environments)
-RUN mkdir -p ./config ./src ./build && \
+# Also create database/migrations directory for Strapi migrations
+RUN mkdir -p ./config ./src ./build ./database/migrations ./.tmp && \
     cp -r ./dist/config/* ./config/ 2>/dev/null || true && \
     cp -r ./dist/src/* ./src/ 2>/dev/null || true && \
     cp -r ./dist/build/* ./build/ 2>/dev/null || true && \
-    chown -R node:node ./config ./src ./build
+    chown -R node:node ./config ./src ./build ./database ./.tmp
 
 # Switch to non-root user
 USER node
