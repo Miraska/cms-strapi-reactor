@@ -7,7 +7,14 @@ import { populateDynamicZoneSections } from '../../../helpers/populate-dynamic-z
 
 export default factories.createCoreController('api::home-page.home-page', ({ strapi }) => ({
   async find(ctx) {
-    const { data, meta } = await super.find(ctx);
+    const result = await super.find(ctx);
+    
+    // Handle case when no data exists in database
+    if (!result || !result.data) {
+      return { data: null, meta: {} };
+    }
+
+    const { data, meta } = result;
     
     if (!data?.sections) {
       return { data, meta };

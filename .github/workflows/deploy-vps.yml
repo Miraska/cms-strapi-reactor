@@ -242,7 +242,11 @@ jobs:
           fi
 
           echo "=== Creating required directories ==="
-          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && mkdir -p public/uploads && chmod 755 public/uploads"
+          ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && mkdir -p public/uploads && \
+            (chown -R 1000:1000 public/uploads 2>/dev/null || sudo chown -R 1000:1000 public/uploads 2>/dev/null || true) && \
+            (chmod -R 775 public/uploads 2>/dev/null || sudo chmod -R 775 public/uploads 2>/dev/null || true) && \
+            # Fallback to world-writable if chown/chmod above failed (restricted environments)
+            ( [ -w public/uploads ] || chmod -R 777 public/uploads 2>/dev/null || true )"
 
           echo "=== Pulling and starting containers ==="
           ssh -p "$PORT" -o StrictHostKeyChecking=no "$REMOTE" "cd ${VPS_APP_DIR} && docker compose pull && docker compose up -d --remove-orphans && docker image prune -f"
