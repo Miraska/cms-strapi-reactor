@@ -37,8 +37,6 @@ USER node
 # Copy only the necessary runtime files
 COPY --chown=node:node --from=builder /app/node_modules ./node_modules
 COPY --chown=node:node --from=builder /app/dist ./dist
-COPY --chown=node:node --from=builder /app/src ./src
-COPY --chown=node:node --from=builder /app/config ./config
 COPY --chown=node:node --from=builder /app/public ./public
 COPY --chown=node:node --from=builder /app/package*.json ./
 COPY --chown=node:node --from=builder /app/favicon.ico ./favicon.ico
