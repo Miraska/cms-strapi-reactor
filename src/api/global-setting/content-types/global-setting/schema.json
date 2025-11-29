@@ -110,44 +110,7 @@
         }
       }
     },
-    "smtpHost": {
-      "type": "string",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "smtpPort": {
-      "type": "integer",
-      "required": false,
-      "default": 587,
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "smtpUser": {
-      "type": "string",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "smtpPassword": {
-      "type": "password",
-      "required": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "smtpFromEmail": {
+    "contactFromEmail": {
       "type": "email",
       "required": false,
       "pluginOptions": {
@@ -156,7 +119,7 @@
         }
       }
     },
-    "smtpFromName": {
+    "contactFromName": {
       "type": "string",
       "required": false,
       "default": "REACTOR Website",

@@ -122,26 +122,28 @@ Single Type для глобальных настроек сайта.
 
 #### Настройка Email для контактной формы
 
-**SMTP настройки хранятся в переменных окружения (не в админке!) для безопасности.**
+Настройки разделены на 2 части:
 
-1. Создайте файл `.env` в папке `cms/`:
+**1. Технические настройки SMTP (ТОЛЬКО в `.env`):**
 
-   ```env
-   # SMTP Configuration
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_USER=your-email@gmail.com
-   SMTP_PASSWORD=your-app-password
-   SMTP_FROM_EMAIL=your-email@gmail.com
-   SMTP_FROM_NAME=REACTOR Website
+```env
+# SMTP Configuration (обязательно)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+```
 
-   # Contact Form
-   CONTACT_FORM_RECIPIENTS=admin@example.com,sales@example.com
-   CONTACT_FORM_SUBJECT=Новая заявка с сайта REACTOR
-   ```
+**2. Бизнес-настройки (в CMS Global Settings ИЛИ `.env`):**
 
-2. Поле `CONTACT_FORM_RECIPIENTS` — это список email через запятую.
-3. Если `CONTACT_FORM_RECIPIENTS` не указано в `.env`, сервис возьмёт получателей и тему из **Site Settings** (`contactFormEmails`, `contactFormSubject`) в админке.
+| Настройка | CMS поле | ENV переменная |
+|-----------|----------|----------------|
+| Получатели | `contactFormEmails` (JSON массив) | `CONTACT_FORM_RECIPIENTS` |
+| Тема письма | `contactFormSubject` | `CONTACT_FORM_SUBJECT` |
+| Email отправителя | `contactFromEmail` | `SMTP_FROM_EMAIL` |
+| Имя отправителя | `contactFromName` | `SMTP_FROM_NAME` |
+
+**Приоритет:** CMS → ENV (если в CMS не заполнено, берётся из ENV)
 
 #### Настройка Gmail
 
@@ -306,15 +308,15 @@ DATABASE_USERNAME=strapi
 DATABASE_PASSWORD=your-password
 DATABASE_SSL=false
 
-# SMTP Configuration (for contact form)
+# SMTP Technical Settings (REQUIRED - only in ENV)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
 SMTP_PASSWORD=your-gmail-app-password
+
+# Contact Form Fallbacks (optional - can be set in CMS Global Settings instead)
 SMTP_FROM_EMAIL=your-email@gmail.com
 SMTP_FROM_NAME=REACTOR Website
-
-# Contact Form
 CONTACT_FORM_RECIPIENTS=admin@example.com,sales@example.com
 CONTACT_FORM_SUBJECT=Новая заявка с сайта REACTOR
 ```

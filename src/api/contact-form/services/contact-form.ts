@@ -2,9 +2,9 @@
  * Contact Form Service
  * Handles email sending for contact form submissions
  * 
- * SMTP settings priority:
- * 1. Global Settings in Strapi (if all required fields are filled)
- * 2. Environment variables (SMTP_HOST, SMTP_USER, SMTP_PASSWORD, etc.)
+ * Configuration sources:
+ * - SMTP technical settings (host, port, user, password): ENV ONLY
+ * - Business settings (recipients, fromEmail, fromName, subject): CMS first, then ENV fallback
  */
 
 import type { Core } from '@strapi/strapi';
@@ -23,76 +23,70 @@ interface SmtpConfig {
   port: number;
   user: string;
   password: string;
-  fromEmail: string;
-  fromName: string;
 }
 
-interface GlobalSettingsSmtp {
-  smtpHost?: string;
-  smtpPort?: number;
-  smtpUser?: string;
-  smtpPassword?: string;
-  smtpFromEmail?: string;
-  smtpFromName?: string;
+interface EmailConfig {
+  fromEmail: string;
+  fromName: string;
+  recipients: string[];
+  subject: string;
+}
+
+interface GlobalSettingsContact {
   contactFormEmails?: string[];
   contactFormSubject?: string;
+  contactFromEmail?: string;
+  contactFromName?: string;
 }
 
 /**
- * Get SMTP configuration from Global Settings or environment variables
+ * Get SMTP technical config from environment variables ONLY
  */
-async function getSmtpConfig(strapi: Core.Strapi): Promise<SmtpConfig | null> {
-  // First, try to get SMTP settings from Global Settings
-  try {
-    const settings = await strapi.documents('api::global-setting.global-setting').findFirst() as GlobalSettingsSmtp | null;
-    
-    if (settings?.smtpHost && settings?.smtpUser && settings?.smtpPassword) {
-      return {
-        host: settings.smtpHost,
-        port: settings.smtpPort || 587,
-        user: settings.smtpUser,
-        password: settings.smtpPassword,
-        fromEmail: settings.smtpFromEmail || settings.smtpUser,
-        fromName: settings.smtpFromName || 'REACTOR Website',
-      };
-    }
-  } catch (error) {
-    strapi.log.warn('Failed to read SMTP settings from Global Settings, falling back to env:', error);
-  }
-
-  // Fallback to environment variables
+function getSmtpConfig(): SmtpConfig | null {
   const host = process.env.SMTP_HOST;
   const port = parseInt(process.env.SMTP_PORT || '587', 10);
   const user = process.env.SMTP_USER;
   const password = process.env.SMTP_PASSWORD;
-  const fromEmail = process.env.SMTP_FROM_EMAIL || user;
-  const fromName = process.env.SMTP_FROM_NAME || 'REACTOR Website';
 
   if (!host || !user || !password) {
     return null;
   }
 
-  return { host, port, user, password, fromEmail: fromEmail || '', fromName };
+  return { host, port, user, password };
 }
 
 /**
- * Get Contact Form recipients and subject
- * Priority: Global Settings -> Environment Variables
+ * Get email config (recipients, from, subject)
+ * Priority: CMS Global Settings -> Environment Variables
  */
-async function getContactConfig(strapi: Core.Strapi): Promise<{ recipients: string[]; subject: string } | null> {
+async function getEmailConfig(strapi: Core.Strapi): Promise<EmailConfig | null> {
   let recipients: string[] = [];
   let subject = 'Новая заявка с сайта REACTOR';
+  let fromEmail = process.env.SMTP_USER || '';
+  let fromName = 'REACTOR Website';
 
   // 1) Try to read from Global Settings first
   try {
-    const settings = await strapi.documents('api::global-setting.global-setting').findFirst() as GlobalSettingsSmtp | null;
+    const settings = await strapi.documents('api::global-setting.global-setting').findFirst() as GlobalSettingsContact | null;
 
+    // Recipients from CMS
     if (settings?.contactFormEmails && Array.isArray(settings.contactFormEmails)) {
       recipients = settings.contactFormEmails.filter((e) => typeof e === 'string' && e.trim().length > 0);
     }
 
+    // Subject from CMS
     if (settings?.contactFormSubject && settings.contactFormSubject.trim().length > 0) {
       subject = settings.contactFormSubject;
+    }
+
+    // From Email from CMS
+    if (settings?.contactFromEmail && settings.contactFromEmail.trim().length > 0) {
+      fromEmail = settings.contactFromEmail;
+    }
+
+    // From Name from CMS
+    if (settings?.contactFromName && settings.contactFromName.trim().length > 0) {
+      fromName = settings.contactFromName;
     }
   } catch (error) {
     strapi.log.warn('Failed to read contact config from Global Settings:', error);
@@ -105,18 +99,32 @@ async function getContactConfig(strapi: Core.Strapi): Promise<{ recipients: stri
       .split(',')
       .map((e) => e.trim())
       .filter((e) => e.length > 0);
+  }
 
+  // Fallback subject from ENV
+  if (subject === 'Новая заявка с сайта REACTOR') {
     const subjectEnv = process.env.CONTACT_FORM_SUBJECT;
     if (subjectEnv && subjectEnv.trim().length > 0) {
       subject = subjectEnv;
     }
   }
 
+  // Fallback fromEmail from ENV
+  if (!fromEmail) {
+    fromEmail = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER || '';
+  }
+
+  // Fallback fromName from ENV
+  const fromNameEnv = process.env.SMTP_FROM_NAME;
+  if (fromNameEnv && fromName === 'REACTOR Website') {
+    fromName = fromNameEnv;
+  }
+
   if (recipients.length === 0) {
     return null;
   }
 
-  return { recipients, subject };
+  return { recipients, subject, fromEmail, fromName };
 }
 
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
@@ -132,6 +140,10 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
         user: smtp.user,
         pass: smtp.password,
       },
+      // Add timeout settings
+      connectionTimeout: 10000, // 10 seconds
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
     });
   },
 
@@ -231,27 +243,34 @@ ${data.message}
    * Send contact form email
    */
   async sendEmail(data: ContactFormData): Promise<{ success: boolean; message: string }> {
-    // Get SMTP config (from Global Settings or env)
-    const smtp = await getSmtpConfig(strapi);
+    // Get SMTP config from ENV ONLY
+    const smtp = getSmtpConfig();
     if (!smtp) {
-      strapi.log.error('SMTP settings are incomplete. Configure in Global Settings or set SMTP_HOST, SMTP_USER, SMTP_PASSWORD env variables.');
-      return { success: false, message: 'Email settings not configured' };
+      strapi.log.error('SMTP not configured. Set SMTP_HOST, SMTP_USER, SMTP_PASSWORD in environment variables.');
+      return { success: false, message: 'SMTP not configured' };
     }
 
-    // Get recipients and subject
-    const contactConfig = await getContactConfig(strapi);
-    if (!contactConfig) {
-      strapi.log.error('No recipient emails configured. Set in Global Settings or CONTACT_FORM_RECIPIENTS env variable.');
+    // Get email config (recipients, from, subject) - CMS first, then ENV
+    const emailConfig = await getEmailConfig(strapi);
+    if (!emailConfig) {
+      strapi.log.error('No recipient emails configured. Set in CMS Global Settings or CONTACT_FORM_RECIPIENTS env variable.');
       return { success: false, message: 'No recipient emails configured' };
     }
 
-    const { recipients, subject } = contactConfig;
+    const { recipients, subject, fromEmail, fromName } = emailConfig;
+
+    // Log configuration (without sensitive data)
+    strapi.log.info(`Sending email via ${smtp.host}:${smtp.port} from "${fromName}" <${fromEmail}> to ${recipients.join(', ')}`);
 
     try {
       const transporter = this.createTransporter(smtp);
 
+      // Verify connection first
+      await transporter.verify();
+      strapi.log.info('SMTP connection verified successfully');
+
       const mailOptions = {
-        from: `"${smtp.fromName}" <${smtp.fromEmail}>`,
+        from: `"${fromName}" <${fromEmail}>`,
         to: recipients.join(', '),
         replyTo: data.email,
         subject,
@@ -264,8 +283,9 @@ ${data.message}
       
       return { success: true, message: 'Email sent successfully' };
     } catch (error) {
-      strapi.log.error('Failed to send email:', error);
-      return { success: false, message: 'Failed to send email' };
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      strapi.log.error('Failed to send email:', errorMessage);
+      return { success: false, message: `Failed to send email: ${errorMessage}` };
     }
   },
 });
