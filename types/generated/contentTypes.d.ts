@@ -752,7 +752,9 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    featuredImage: Schema.Attribute.Media<'images'>;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    isFeatured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::partner.partner'>;
     logo: Schema.Attribute.Media<'images'>;
@@ -795,16 +797,17 @@ export interface ApiPartnersPagePartnersPage extends Struct.SingleTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     sections: Schema.Attribute.DynamicZone<
       [
+        'partners.hero-section',
+        'partners.more-than-company-section',
+        'sections.partners-grid',
         'sections.hero',
         'sections.text-with-image',
-        'sections.partners-grid',
         'sections.features',
         'sections.stats',
         'sections.cta',
         'sections.rich-content',
         'sections.accordion',
         'sections.about-preview',
-        'partners.more-than-company-section',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{

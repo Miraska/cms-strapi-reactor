@@ -2,7 +2,7 @@
   "collectionName": "components_sections_partners_grids",
   "info": {
     "displayName": "Partners Grid Section",
-    "description": "Grid of partner logos with optional links",
+    "description": "Grid of partner logos from Partners collection",
     "icon": "grid"
   },
   "attributes": {
@@ -37,7 +37,10 @@
     "showDescription": {
       "type": "boolean",
       "default": false
+    },
+    "showFeaturedFirst": {
+      "type": "boolean",
+      "default": true
     }
   }
 }
-

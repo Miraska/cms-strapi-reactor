@@ -38,13 +38,23 @@ async function setupPublicPermissions(strapi: Core.Strapi) {
       { action: 'api::post.post.findOne' },
       // Page Content - Individual Pages
       { action: 'api::home-page.home-page.find' },
-      { action: 'api::about-page.about-page.find' },
+      // { action: 'api::about-page.about-page.find' }, TODO
       { action: 'api::technology-page.technology-page.find' },
-      { action: 'api::investment-page.investment-page.find' },
+      // { action: 'api::investment-page.investment-page.find' }, TODO
       { action: 'api::partners-page.partners-page.find' },
       { action: 'api::contact-page.contact-page.find' },
       // Global Settings
       { action: 'api::global-setting.global-setting.find' },
+      // Collections used in Dynamic Zone relations
+      { action: 'api::partner.partner.find' },
+      { action: 'api::partner.partner.findOne' },
+      { action: 'api::team-member.team-member.find' },
+      { action: 'api::team-member.team-member.findOne' },
+      { action: 'api::technology-carousel-card.technology-carousel-card.find' },
+      { action: 'api::technology-carousel-card.technology-carousel-card.findOne' },
+      // Upload plugin for media files
+      { action: 'plugin::upload.content-api.find' },
+      { action: 'plugin::upload.content-api.findOne' },
     ];
 
     for (const perm of permissions) {

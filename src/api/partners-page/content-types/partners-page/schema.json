@@ -39,16 +39,17 @@
     "sections": {
       "type": "dynamiczone",
       "components": [
+        "partners.hero-section",
+        "partners.more-than-company-section",
+        "sections.partners-grid",
         "sections.hero",
         "sections.text-with-image",
-        "sections.partners-grid",
         "sections.features",
         "sections.stats",
         "sections.cta",
         "sections.rich-content",
         "sections.accordion",
-        "sections.about-preview",
-        "partners.more-than-company-section"
+        "sections.about-preview"
       ],
       "pluginOptions": {
         "i18n": {

@@ -293,14 +293,53 @@ export interface GlobalSocialLink extends Struct.ComponentSchema {
   };
 }
 
+export interface PartnersHeroSection extends Struct.ComponentSchema {
+  collectionName: 'components_partners_hero_sections';
+  info: {
+    description: 'Hero section for Partners page with orbital animation';
+    displayName: 'Partners Hero Section';
+    icon: 'rocket';
+  };
+  attributes: {
+    cta: Schema.Attribute.Component<'shared.button', false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    mainPlanetImage: Schema.Attribute.Media<'images'>;
+    orbitPlanetImage: Schema.Attribute.Media<'images'>;
+    subtitle: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    title: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+  };
+}
+
 export interface PartnersMoreThanCompanySection extends Struct.ComponentSchema {
   collectionName: 'components_partners_more_than_company_sections';
   info: {
-    description: 'More than a company section';
+    description: 'More than a company section with image and quote';
     displayName: 'Partners More Than Company Section';
     icon: 'heart';
   };
   attributes: {
+    backgroundImage: Schema.Attribute.Media<'images'>;
+    glowImage: Schema.Attribute.Media<'images'>;
     quote: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -887,7 +926,7 @@ export interface SectionsMarket extends Struct.ComponentSchema {
 export interface SectionsPartnersGrid extends Struct.ComponentSchema {
   collectionName: 'components_sections_partners_grids';
   info: {
-    description: 'Grid of partner logos with optional links';
+    description: 'Grid of partner logos from Partners collection';
     displayName: 'Partners Grid Section';
     icon: 'grid';
   };
@@ -895,6 +934,7 @@ export interface SectionsPartnersGrid extends Struct.ComponentSchema {
     columns: Schema.Attribute.Enumeration<['3', '4', '5', '6']> & Schema.Attribute.DefaultTo<'4'>;
     partners: Schema.Attribute.Relation<'oneToMany', 'api::partner.partner'>;
     showDescription: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    showFeaturedFirst: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     subtitle: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1663,6 +1703,7 @@ declare module '@strapi/strapi' {
       'global.nav-item': GlobalNavItem;
       'global.navigation': GlobalNavigation;
       'global.social-link': GlobalSocialLink;
+      'partners.hero-section': PartnersHeroSection;
       'partners.more-than-company-section': PartnersMoreThanCompanySection;
       'sections.about-preview': SectionsAboutPreview;
       'sections.accordion': SectionsAccordion;

@@ -1,12 +1,12 @@
 {
-  "collectionName": "components_partners_more_than_company_sections",
+  "collectionName": "components_partners_hero_sections",
   "info": {
-    "displayName": "Partners More Than Company Section",
-    "description": "More than a company section with image and quote",
-    "icon": "heart"
+    "displayName": "Partners Hero Section",
+    "description": "Hero section for Partners page with orbital animation",
+    "icon": "rocket"
   },
   "attributes": {
-    "title": {
+    "label": {
       "type": "string",
       "required": false,
       "pluginOptions": {
@@ -15,7 +15,7 @@
         }
       }
     },
-    "textMuted": {
+    "title": {
       "type": "text",
       "required": false,
       "pluginOptions": {
@@ -24,7 +24,7 @@
         }
       }
     },
-    "textStrong": {
+    "subtitle": {
       "type": "text",
       "required": false,
       "pluginOptions": {
@@ -33,22 +33,23 @@
         }
       }
     },
-    "quote": {
-      "type": "text",
-      "required": false,
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "backgroundImage": {
+    "mainPlanetImage": {
       "type": "media",
       "multiple": false,
       "required": false,
       "allowedTypes": ["images"]
     },
-    "glowImage": {
+    "orbitPlanetImage": {
       "type": "media",
       "multiple": false,
       "required": false,

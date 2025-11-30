@@ -2,8 +2,8 @@
  * Dynamic Zone Relations Populator
  * 
  * Helper to properly populate relations inside Dynamic Zone components.
- * Strapi doesn't populate nested relations in Dynamic Zone by default,
- * so we need to manually fetch them.
+ * Strapi v5 doesn't populate nested relations in Dynamic Zone by default,
+ * so we need to manually fetch them using db.query.
  */
 
 import type { Core } from '@strapi/strapi';
@@ -58,7 +58,37 @@ export const SECTION_RELATIONS_CONFIG: SectionConfig[] = [
     relations: [
       {
         field: 'partners',
-        populate: ['logo'],
+        populate: ['logo', 'featuredImage'],
+      },
+    ],
+  },
+  {
+    component: 'partners.hero-section',
+    relations: [
+      {
+        field: 'cta',
+        populate: [],
+      },
+      {
+        field: 'mainPlanetImage',
+        populate: [],
+      },
+      {
+        field: 'orbitPlanetImage',
+        populate: [],
+      },
+    ],
+  },
+  {
+    component: 'partners.more-than-company-section',
+    relations: [
+      {
+        field: 'backgroundImage',
+        populate: [],
+      },
+      {
+        field: 'glowImage',
+        populate: [],
       },
     ],
   },
@@ -122,22 +152,33 @@ export const SECTION_RELATIONS_CONFIG: SectionConfig[] = [
 // =============================================================================
 
 /**
- * Build populate object for a relation config
+ * Build populate object for db.query
+ * Handles nested populate for relations with media/components
  */
 function buildPopulateObject(relations: RelationConfig[]): Record<string, any> {
   const populate: Record<string, any> = {};
   
   for (const relation of relations) {
-    populate[relation.field] = {
-      populate: relation.populate,
-    };
+    if (relation.populate.length > 0) {
+      // Build nested populate object for relation fields
+      const nestedPopulate: Record<string, boolean> = {};
+      for (const field of relation.populate) {
+        nestedPopulate[field] = true;
+      }
+      populate[relation.field] = {
+        populate: nestedPopulate,
+      };
+    } else {
+      populate[relation.field] = true;
+    }
   }
   
   return populate;
 }
 
 /**
- * Populate relations for a single section
+ * Populate relations for a single section using db.query
+ * This works for both component relations and collection type relations
  */
 async function populateSectionRelations(
   strapi: Core.Strapi,
@@ -147,6 +188,7 @@ async function populateSectionRelations(
   try {
     const populateConfig = buildPopulateObject(config.relations);
     
+    // Use db.query on the component to get populated relations
     const componentData = await strapi.db.query(config.component).findOne({
       where: { id: section.id },
       populate: populateConfig,
@@ -159,7 +201,7 @@ async function populateSectionRelations(
     // Merge populated relations into section
     const populatedSection = { ...section };
     for (const relation of config.relations) {
-      if (componentData[relation.field]) {
+      if (componentData[relation.field] !== undefined) {
         populatedSection[relation.field] = componentData[relation.field];
       }
     }
@@ -232,4 +274,3 @@ export function addSectionConfig(config: SectionConfig): void {
     SECTION_RELATIONS_CONFIG.push(config);
   }
 }
-
