@@ -536,6 +536,19 @@ export interface ApiGlobalSettingGlobalSetting extends Struct.SingleTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<'New inquiry from REACTOR website'>;
+    contactFromEmail: Schema.Attribute.Email &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    contactFromName: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'REACTOR Website'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
     favicon: Schema.Attribute.Media<'images'> &
@@ -586,44 +599,6 @@ export interface ApiGlobalSettingGlobalSetting extends Struct.SingleTypeSchema {
     siteName: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'REACTOR'>;
-    smtpFromEmail: Schema.Attribute.Email &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    smtpFromName: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<'REACTOR Website'>;
-    smtpHost: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    smtpPassword: Schema.Attribute.Password &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    smtpPort: Schema.Attribute.Integer &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<587>;
-    smtpUser: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
   };
@@ -1049,13 +1024,12 @@ export interface ApiTechnologyPageTechnologyPage extends Struct.SingleTypeSchema
     sections: Schema.Attribute.DynamicZone<
       [
         'sections.about-preview',
-        'sections.technology-preview',
         'sections.why-trust-us',
-        'sections.cta',
         'technology.resonant-section',
+        'sections.features',
         'technology.scientific-section',
         'technology.controlled-rollout-section',
-        'sections.features',
+        'sections.cta',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{

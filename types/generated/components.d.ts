@@ -397,11 +397,30 @@ export interface SectionsAccordion extends Struct.ComponentSchema {
 export interface SectionsContactInfo extends Struct.ComponentSchema {
   collectionName: 'components_sections_contact_infos';
   info: {
-    description: 'Contact form and information section';
+    description: 'Contact form and information section with benefits';
     displayName: 'Contact Info Section';
     icon: 'envelop';
   };
   attributes: {
+    benefits: Schema.Attribute.Component<'shared.text-item', true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    benefitsHeader: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    companyLabel: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'Company'>;
     emailLabel: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -409,12 +428,26 @@ export interface SectionsContactInfo extends Struct.ComponentSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<'Email'>;
+    firstNameLabel: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'First name'>;
     formTitle: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    lastNameLabel: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'Last name'>;
     messageLabel: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -422,13 +455,6 @@ export interface SectionsContactInfo extends Struct.ComponentSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<'Message'>;
-    nameLabel: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<'Name'>;
     showForm: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     submitButtonText: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -1310,7 +1336,7 @@ export interface SharedCardItem extends Struct.ComponentSchema {
 export interface SharedFeatureItem extends Struct.ComponentSchema {
   collectionName: 'components_shared_feature_items';
   info: {
-    description: 'A feature card with title and description';
+    description: 'A feature card with title, description and optional icon';
     displayName: 'Feature Item';
     icon: 'star';
   };
@@ -1319,6 +1345,12 @@ export interface SharedFeatureItem extends Struct.ComponentSchema {
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
+        };
+      }>;
+    icon: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
         };
       }>;
     title: Schema.Attribute.String &

@@ -2,7 +2,7 @@
   "collectionName": "components_sections_contact_infos",
   "info": {
     "displayName": "Contact Info Section",
-    "description": "Contact form and information section",
+    "description": "Contact form and information section with benefits",
     "icon": "envelop"
   },
   "attributes": {
@@ -24,6 +24,25 @@
         }
       }
     },
+    "benefitsHeader": {
+      "type": "string",
+      "required": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "benefits": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.text-item",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "showForm": {
       "type": "boolean",
       "default": true
@@ -37,9 +56,27 @@
         }
       }
     },
-    "nameLabel": {
+    "firstNameLabel": {
       "type": "string",
-      "default": "Name",
+      "default": "First name",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "lastNameLabel": {
+      "type": "string",
+      "default": "Last name",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "companyLabel": {
+      "type": "string",
+      "default": "Company",
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -84,4 +121,3 @@
     }
   }
 }
-

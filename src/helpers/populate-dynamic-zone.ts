@@ -62,6 +62,59 @@ export const SECTION_RELATIONS_CONFIG: SectionConfig[] = [
       },
     ],
   },
+  {
+    component: 'sections.features',
+    relations: [
+      {
+        field: 'items',
+        populate: ['icon'],
+      },
+    ],
+  },
+  {
+    component: 'technology.resonant-section',
+    relations: [
+      {
+        field: 'pills',
+        populate: [],
+      },
+      {
+        field: 'image',
+        populate: [],
+      },
+    ],
+  },
+  {
+    component: 'technology.scientific-section',
+    relations: [
+      {
+        field: 'bullets',
+        populate: [],
+      },
+      {
+        field: 'image',
+        populate: [],
+      },
+    ],
+  },
+  {
+    component: 'technology.controlled-rollout-section',
+    relations: [
+      {
+        field: 'columns',
+        populate: ['icon'],
+      },
+    ],
+  },
+  {
+    component: 'sections.contact-info',
+    relations: [
+      {
+        field: 'benefits',
+        populate: [],
+      },
+    ],
+  },
 ];
 
 // =============================================================================

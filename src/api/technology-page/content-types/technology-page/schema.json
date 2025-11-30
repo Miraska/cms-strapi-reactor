@@ -40,13 +40,12 @@
       "type": "dynamiczone",
       "components": [
         "sections.about-preview",
-        "sections.technology-preview",
         "sections.why-trust-us",
-        "sections.cta",
         "technology.resonant-section",
+        "sections.features",
         "technology.scientific-section",
         "technology.controlled-rollout-section",
-        "sections.features"
+        "sections.cta"
       ],
       "pluginOptions": {
         "i18n": {
